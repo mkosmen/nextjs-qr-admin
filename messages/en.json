@@ -1,0 +1,15 @@
+{
+  "name": "Name",
+  "surname": "Surname",
+  "submit": "Submit",
+  "email": "Email",
+  "password": "Password",
+  "dontHaveAnAccount": "Don't you have an account yet?",
+  "haveAnAccount": "Do you have an account?",
+  "signIn": "Sign In",
+  "signUp": "Sign Up",
+  "validation": {
+    "email": "Please enter a valid email address",
+    "between": "{field} must be between {min} and {max} characters"
+  }
+}
