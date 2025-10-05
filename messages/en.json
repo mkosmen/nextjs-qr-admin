@@ -8,6 +8,7 @@
   "haveAnAccount": "Do you have an account?",
   "signIn": "Sign In",
   "signUp": "Sign Up",
+  "loginFailed": "Account not found. Please check your informations",
   "validation": {
     "email": "Please enter a valid email address",
     "between": "{field} must be between {min} and {max} characters"

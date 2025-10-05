@@ -1,23 +1,23 @@
-import { NextRequest } from "next/server";
-import connect from "@/lib/mongo/client";
-import { User } from "@/lib/types";
+import { NextRequest } from 'next/server';
+import { cookies } from 'next/headers';
+import { postRequest } from '@/lib/request';
+import { SigInResponse } from '@/lib/types';
+import { STATIC_KEYS } from '@/lib/constant';
 
 export async function POST(req: NextRequest) {
-  const { email, password } = await req.json();
+  try {
+    const data = await req.json();
+    const result = await postRequest<SigInResponse>('/auth/signin', { data });
 
-  const user = await (await connect()).collection<User>("users").findOne({
-    email,
-    password,
-  });
-
-  return new Response(
-    JSON.stringify({
-      result: !!user,
-    }),
-    {
-      headers: {
-        "Content-Type": "application-json",
-      },
+    if (!result.token) {
+      throw new Error();
     }
-  );
+
+    const cookieStorage = await cookies();
+    cookieStorage.set(STATIC_KEYS.TOKEN, result.token);
+
+    return Response.json({ result: true });
+  } catch {
+    return Response.json({ result: false });
+  }
 }

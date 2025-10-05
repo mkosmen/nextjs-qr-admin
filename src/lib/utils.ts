@@ -1,35 +1,20 @@
-import crypto from "node:crypto";
-const algorithm = "aes-256-cbc";
-const secretKey = process.env.SECRET_KEY || "test";
+import { REQUEST_TYPES } from '@/lib/constant';
 
-if (!secretKey) {
-  throw new Error("SECRET_KEY environment variable is required");
-}
+const DEFAULT_FETCH_OPTIONS = {
+  headers: { 'Content-Type': 'application/json' },
+  method: REQUEST_TYPES.GET,
+};
 
-const key = crypto
-  .createHash("sha512")
-  .update(secretKey)
-  .digest("hex")
-  .substring(0, 32);
+export const fetchApi = async <T>(url: string, options = {}) => {
+  const o = { ...DEFAULT_FETCH_OPTIONS, ...options };
+  const r = await fetch(url, o);
+  return <T>await r.json();
+};
 
-const iv = crypto.randomBytes(16);
+export const postApi = async <T>(url: string, config?: { params?: any; body?: any }) => {
+  const opts = { ...config, method: 'POST' };
+  return await fetchApi<T>(url, opts);
+};
 
-export function encrypt(data: string) {
-  const cipher = crypto.createCipheriv(algorithm, Buffer.from(key), iv);
-  let encrypted = cipher.update(data, "utf-8", "hex");
-  encrypted += cipher.final("hex");
-  return iv.toString("hex") + encrypted;
-}
-
-export function decrypt(data: string) {
-  const inputIV = data.slice(0, 32);
-  const encrypted = data.slice(32);
-  const decipher = crypto.createDecipheriv(
-    algorithm,
-    Buffer.from(key),
-    Buffer.from(inputIV, "hex")
-  );
-  let decrypted = decipher.update(encrypted, "hex", "utf-8");
-  decrypted += decipher.final("utf-8");
-  return decrypted;
-}
+export const getApi = async <T>(url: string, config?: { params?: any }) =>
+  await fetchApi<T>(url, { ...config, method: REQUEST_TYPES.GET });

@@ -1,6 +1,6 @@
-import { ReactElement } from "react";
+import { ReactElement } from 'react';
 
-import "@/app/globals.scss";
+import '@/app/globals.scss';
 
 type Props = {
   children: ReactElement;

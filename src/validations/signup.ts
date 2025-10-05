@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import { UserWithPassword } from "@/lib/types";
-import { z } from "zod";
-import { getTranslations } from "next-intl/server";
+import { UserWithPassword } from '@/lib/types';
+import { z } from 'zod';
+import { getTranslations } from 'next-intl/server';
 
 const schema = async () => {
   const t = await getTranslations();
@@ -11,15 +11,15 @@ const schema = async () => {
     name: z
       .string()
       .min(3, {
-        message: t("validation.between", {
-          field: t("name"),
+        message: t('validation.between', {
+          field: t('name'),
           min: 3,
           max: 31,
         }),
       })
       .max(31, {
-        message: t("validation.between", {
-          field: t("password"),
+        message: t('validation.between', {
+          field: t('password'),
           min: 3,
           max: 31,
         }),
@@ -27,34 +27,34 @@ const schema = async () => {
     surname: z
       .string()
       .min(3, {
-        message: t("validation.between", {
-          field: t("surname"),
+        message: t('validation.between', {
+          field: t('surname'),
           min: 3,
           max: 31,
         }),
       })
       .max(31, {
-        message: t("validation.between", {
-          field: t("surname"),
+        message: t('validation.between', {
+          field: t('surname'),
           min: 3,
           max: 31,
         }),
       }),
     email: z.email({
-      message: t("validation.email"),
+      message: t('validation.email'),
     }),
     password: z
       .string()
       .min(3, {
-        message: t("validation.between", {
-          field: t("password"),
+        message: t('validation.between', {
+          field: t('password'),
           min: 3,
           max: 31,
         }),
       })
       .max(31, {
-        message: t("validation.between", {
-          field: t("password"),
+        message: t('validation.between', {
+          field: t('password'),
           min: 3,
           max: 31,
         }),

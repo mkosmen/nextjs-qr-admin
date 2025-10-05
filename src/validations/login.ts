@@ -1,28 +1,28 @@
-"use server";
+'use server';
 
-import { ILogin } from "@/lib/types";
-import { z } from "zod";
-import { getTranslations } from "next-intl/server";
+import { SigIn } from '@/lib/types';
+import { z } from 'zod';
+import { getTranslations } from 'next-intl/server';
 
 const schema = async () => {
   const t = await getTranslations();
 
   return z.object({
     email: z.email({
-      message: t("validation.email"),
+      message: t('validation.email'),
     }),
     password: z
       .string()
       .min(3, {
-        message: t("validation.between", {
-          field: t("password"),
+        message: t('validation.between', {
+          field: t('password'),
           min: 3,
           max: 31,
         }),
       })
       .max(31, {
-        message: t("validation.between", {
-          field: t("password"),
+        message: t('validation.between', {
+          field: t('password'),
           min: 3,
           max: 31,
         }),
@@ -30,7 +30,7 @@ const schema = async () => {
   });
 };
 
-export default async function register(props: ILogin) {
+export default async function register(props: SigIn) {
   const result = (await schema()).safeParse(props);
 
   if (!result.success) {

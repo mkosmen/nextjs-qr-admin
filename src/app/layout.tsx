@@ -1,8 +1,8 @@
-import { ReactElement } from "react";
-import { NextIntlClientProvider } from "next-intl";
-import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
+import { ReactElement } from 'react';
+import { NextIntlClientProvider } from 'next-intl';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 
-import "./globals.scss";
+import './globals.scss';
 
 type Props = {
   children: ReactElement;

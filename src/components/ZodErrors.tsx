@@ -5,7 +5,7 @@ export default function ZodErrors({ errors }: { errors?: string[] }) {
 
   return errors.map((err: string, index: number) => {
     return (
-      <div key={index} className="text-red-500 text-xs italic py-2">
+      <div key={index} className="py-2 text-xs text-red-500 italic">
         {err}
       </div>
     );
