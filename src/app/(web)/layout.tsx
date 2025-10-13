@@ -1,3 +1,5 @@
+'use client';
+
 import { ReactElement } from 'react';
 import XHeader from './_shared/XHeader';
 import XBody from './_shared/XBody';
@@ -10,7 +12,7 @@ type Props = {
   children: ReactElement;
 };
 
-export default async function RootLayout({ children }: Props) {
+export default function RootLayout({ children }: Props) {
   return (
     <div className="flex h-full w-full flex-col">
       <XHeader />
