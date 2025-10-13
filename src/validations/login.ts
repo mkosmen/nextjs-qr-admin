@@ -30,7 +30,7 @@ const schema = async () => {
   });
 };
 
-export default async function register(props: SigIn) {
+export default async function login(props: SigIn) {
   const result = (await schema()).safeParse(props);
 
   if (!result.success) {

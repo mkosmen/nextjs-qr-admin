@@ -8,6 +8,8 @@
   "haveAnAccount": "Do you have an account?",
   "signIn": "Sign In",
   "signUp": "Sign Up",
+  "signOut": "Sign Out",
+  "profile": "Profile",
   "loginFailed": "Account not found. Please check your informations",
   "validation": {
     "email": "Please enter a valid email address",

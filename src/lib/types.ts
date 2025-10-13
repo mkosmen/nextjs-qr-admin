@@ -14,3 +14,7 @@ export interface User {
   email: string;
   password: string;
 }
+
+export interface ResultResponse {
+  result: boolean;
+}

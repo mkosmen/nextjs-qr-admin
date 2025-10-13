@@ -15,3 +15,12 @@ export const getRequest = async <T>(url: string, config?: any) =>
 
 export const postRequest = async <T>(url: string, config: any) =>
   await request<T>({ ...config, url, method: REQUEST_TYPES.POST });
+
+export const putRequest = async <T>(url: string, config: any) =>
+  await request<T>({ ...config, url, method: REQUEST_TYPES.PUT });
+
+export const patchRequest = async <T>(url: string, config: any) =>
+  await request<T>({ ...config, url, method: REQUEST_TYPES.PATCH });
+
+export const deleteRequest = async <T>(url: string, config: any) =>
+  await request<T>({ ...config, url, method: REQUEST_TYPES.DELETE });

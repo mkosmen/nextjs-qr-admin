@@ -6,12 +6,13 @@ import Link from 'next/link';
 import loginValidation from '@/validations/login';
 import ZodErrors from '@/components/ZodErrors';
 import { Button, TextField, Box, Alert } from '@mui/material';
-import { redirect } from 'next/navigation';
 import { LINKS } from '@/lib/constant';
 import { postApi } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
   const t = useTranslations();
+  const router = useRouter();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -49,7 +50,7 @@ export default function LoginPage() {
       if (!result.result) {
         setShowAlert(true);
       } else {
-        redirect(`/${LINKS.DASHBOARD}`);
+        router.push(`/${LINKS.DASHBOARD}`);
       }
     } catch (e: any) {
       console.log('HATA VAR', e);

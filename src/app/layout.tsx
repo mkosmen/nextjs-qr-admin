@@ -10,8 +10,8 @@ type Props = {
 
 export default function RootLayout({ children }: Props) {
   return (
-    <html>
-      <body>
+    <html className="h-full">
+      <body className="h-full">
         <AppRouterCacheProvider>
           <NextIntlClientProvider>{children}</NextIntlClientProvider>
         </AppRouterCacheProvider>

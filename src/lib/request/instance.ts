@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { cookies } from 'next/headers';
+import { STATIC_KEYS } from '../constant';
 
 const options = {
   baseURL: process.env.NEXT_PUBLIC_BASE_API_URL,
@@ -9,9 +11,15 @@ const options = {
 const instance = axios.create(options);
 
 // Add a request interceptor
-axios.interceptors.request.use(
-  function (config) {
-    // Do something before request is sent
+instance.interceptors.request.use(
+  async function (config) {
+    console.log('REQ REQ');
+    const cookieStorage = await cookies();
+    const token = cookieStorage.get(STATIC_KEYS.TOKEN)?.value;
+    if (token) {
+      config.headers['x-token'] = token;
+    }
+
     return config;
   },
   function (error) {
@@ -21,15 +29,13 @@ axios.interceptors.request.use(
 );
 
 // Add a response interceptor
-axios.interceptors.response.use(
+instance.interceptors.response.use(
   function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
     return response;
   },
   function (error) {
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
     return Promise.reject(error);
   },
 );
