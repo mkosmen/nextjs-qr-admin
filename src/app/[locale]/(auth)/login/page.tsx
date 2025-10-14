@@ -8,7 +8,8 @@ import { API_LINKS, LINKS } from '@/lib/constant';
 import { postApi } from '@/lib/utils';
 import loginValidation from '@/validations/login';
 import { Button, Box, Alert } from '@mui/material';
-import FormInput from '@/components/ui/FormInput';
+import MhcInput from '@/components/ui/MhcInput';
+import MhcPassword from '@/components/ui/MhcPassword';
 
 export default function LoginPage() {
   const t = useTranslations();
@@ -79,7 +80,7 @@ export default function LoginPage() {
           </Alert>
         ) : null}
 
-        <FormInput
+        <MhcInput
           id="email"
           label={t('email')}
           value={email}
@@ -94,7 +95,7 @@ export default function LoginPage() {
           error={(errors?.email || []).length > 0}
         />
 
-        <FormInput
+        <MhcPassword
           id="password"
           label={t('password')}
           type="password"

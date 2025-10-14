@@ -7,7 +7,7 @@ import signupValidation from '@/validations/signup';
 import { useRouter } from 'next/navigation';
 import { API_LINKS, LINKS } from '@/lib/constant';
 import { Button, Box, Alert } from '@mui/material';
-import FormInput from '@/components/ui/FormInput';
+import MhcInput from '@/components/ui/MhcInput';
 import { postApi } from '@/lib/utils';
 
 export default function SigUpPage() {
@@ -86,7 +86,7 @@ export default function SigUpPage() {
           </Alert>
         ) : null}
 
-        <FormInput
+        <MhcInput
           id="name"
           label={t('name')}
           variant="outlined"
@@ -99,7 +99,7 @@ export default function SigUpPage() {
           slotProps={{ htmlInput: { maxLength: 31 } }}
         />
 
-        <FormInput
+        <MhcInput
           id="surname"
           label={t('surname')}
           variant="outlined"
@@ -111,7 +111,7 @@ export default function SigUpPage() {
           slotProps={{ htmlInput: { maxLength: 31 } }}
         />
 
-        <FormInput
+        <MhcInput
           id="email"
           label={t('email')}
           variant="outlined"
@@ -123,7 +123,7 @@ export default function SigUpPage() {
           slotProps={{ htmlInput: { maxLength: 31 } }}
         />
 
-        <FormInput
+        <MhcInput
           id="password"
           label={t('password')}
           type="password"

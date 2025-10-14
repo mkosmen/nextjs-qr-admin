@@ -1,6 +1,6 @@
+import { ChangeEvent } from 'react';
 import { TextField, TextFieldProps, TextFieldVariants } from '@mui/material';
 import ZodErrors from '@/components/ZodErrors';
-import { ChangeEvent } from 'react';
 
 interface FormInputProps extends Omit<TextFieldProps, 'variant'> {
   variant?: TextFieldVariants;

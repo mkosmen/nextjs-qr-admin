@@ -23,7 +23,7 @@ export default function LocalizerDropdown() {
 
   return (
     <Dropdown items={items}>
-      <span className="p-2">{locale}</span>
+      <span className="rounded border border-gray-200 bg-white p-2">{locale}</span>
     </Dropdown>
   );
 }
