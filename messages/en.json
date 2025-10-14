@@ -14,5 +14,9 @@
   "validation": {
     "email": "Please enter a valid email address",
     "between": "{field} must be between {min} and {max} characters"
+  },
+  "NotFoundPage": {
+    "title": "Page not found",
+    "login": "Go to Login"
   }
 }

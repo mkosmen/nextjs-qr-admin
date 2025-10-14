@@ -14,5 +14,9 @@
   "validation": {
     "email": "Lütfen geçerli bir E-Posta adresi girin",
     "between": "{field} en az {min} en fazla {max} karakterden oluşablilir"
+  },
+  "NotFoundPage": {
+    "title": "Sayfa bulunamadı",
+    "login": "Girişe Git"
   }
 }

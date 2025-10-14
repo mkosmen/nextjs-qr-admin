@@ -27,3 +27,6 @@ export const STATIC_KEYS = {
   TOKEN: 'token',
   LANGAUGE: 'lang',
 };
+
+export const LOCALES = ['en', 'tr'];
+export const DEFAULT_LOCALE = 'tr';

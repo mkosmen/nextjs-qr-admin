@@ -6,7 +6,7 @@ import XBody from './_shared/XBody';
 import XLeft from './_shared/XLeft';
 import XFooter from './_shared/XFooter';
 
-import '@/app/globals.scss';
+import '../globals.scss';
 
 type Props = {
   children: ReactElement;

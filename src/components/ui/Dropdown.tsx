@@ -1,11 +1,12 @@
 'use client';
 
 import { useState, MouseEvent, PropsWithChildren } from 'react';
-import { Box, IconButton, Button, Menu, MenuItem, Typography } from '@mui/material';
+import { Box, IconButton, Button, Menu, MenuItem, Typography, Link } from '@mui/material';
 
 export interface Item {
   text: string;
-  onClick: () => void;
+  href?: string;
+  onClick?: () => void;
 }
 
 export interface Props {
@@ -25,7 +26,7 @@ export default function XDropdown(props: Props & PropsWithChildren) {
   }
 
   function onClickHandler(item: Item) {
-    item.onClick();
+    item?.onClick?.();
 
     if (props.closeAfterClick) {
       handleCloseUserMenu();
@@ -55,7 +56,13 @@ export default function XDropdown(props: Props & PropsWithChildren) {
       >
         {props.items.map((item, i) => (
           <MenuItem key={i} onClick={() => onClickHandler(item)}>
-            <Typography sx={{ textAlign: 'center' }}>{item.text}</Typography>
+            {item.href ? (
+              <Link href={item.href}>
+                <Typography sx={{ textAlign: 'center' }}>{item.text}</Typography>
+              </Link>
+            ) : (
+              <Typography sx={{ textAlign: 'center' }}>{item.text}</Typography>
+            )}
           </MenuItem>
         ))}
       </Menu>

@@ -1,23 +1,44 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import createMiddleware from 'next-intl/middleware';
+import { getLocale } from 'next-intl/server';
 import { LINKS, STATIC_KEYS } from './lib/constant';
+import { DEFAULT_LOCALE, LOCALES } from './lib/constant';
 
 const publicRoutes = ['/login', '/sign-up'];
 
-export default async function middleware(req: NextRequest) {
+const i18nMiddleware = (req: NextRequest) => {
+  return createMiddleware({
+    locales: LOCALES,
+    defaultLocale: DEFAULT_LOCALE,
+  })(req);
+};
+
+async function authMiddleware(req: NextRequest, response: NextResponse) {
   const path = req.nextUrl.pathname;
-  const isPublicRoute = publicRoutes.includes(path);
+  const isPublicRoute = publicRoutes.some((p) => path.endsWith(p));
   const token = (await cookies()).get(STATIC_KEYS.TOKEN)?.value;
+  const locale = await getLocale();
 
   if (!token && !isPublicRoute) {
-    return NextResponse.redirect(new URL(`/${LINKS.LOGIN}`, req.nextUrl));
+    return NextResponse.redirect(new URL(`/${locale}/${LINKS.LOGIN}`, req.nextUrl));
   }
 
   if (token && isPublicRoute) {
-    return NextResponse.redirect(new URL(`/${LINKS.DASHBOARD}`, req.nextUrl));
+    return NextResponse.redirect(new URL(`/${locale}/${LINKS.DASHBOARD}`, req.nextUrl));
   }
 
-  return NextResponse.next();
+  return response;
+}
+
+export default async function middleware(request: NextRequest) {
+  const response = i18nMiddleware(request);
+
+  if (response && !response.ok) {
+    return response;
+  }
+
+  return await authMiddleware(request, response);
 }
 
 export const config = {
