@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, MouseEvent, PropsWithChildren } from 'react';
-import { Box, IconButton, Button, Menu, MenuItem, Typography, Link } from '@mui/material';
+import { Box, Button, Menu, MenuItem, Typography } from '@mui/material';
+import { Link } from '@/i18n/navigation';
 
 export interface Item {
   text: string;

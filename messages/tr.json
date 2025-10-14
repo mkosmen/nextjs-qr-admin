@@ -10,7 +10,7 @@
   "signUp": "Üye Ol",
   "signOut": "Çıkış Yap",
   "profile": "Profil",
-  "loginFailed": "Üyelik bilgisi bulunamadı. Lütfen bilgileriniz değiştirip tekrar deneyin",
+  "loginFailed": "Üye kaydı bulunamadı",
   "validation": {
     "email": "Lütfen geçerli bir E-Posta adresi girin",
     "between": "{field} en az {min} en fazla {max} karakterden oluşablilir"

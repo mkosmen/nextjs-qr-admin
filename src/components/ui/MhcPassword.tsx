@@ -5,13 +5,13 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
-  TextFieldProps,
+  OutlinedInputProps,
 } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import ZodErrors from '@/components/ZodErrors';
 
-interface FormInputProps extends Omit<TextFieldProps, 'variant'> {
+interface FormInputProps extends OutlinedInputProps {
   errors?: string[];
   onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
@@ -31,7 +31,7 @@ export default function FormInput(props: FormInputProps) {
     <FormControl size="small" variant="outlined" className="mb-1 w-full">
       <InputLabel htmlFor={other.id}>{other.label}</InputLabel>
       <OutlinedInput
-        id={other.id}
+        {...other}
         error={hasError}
         type={showPassword ? 'text' : 'password'}
         endAdornment={
@@ -47,7 +47,6 @@ export default function FormInput(props: FormInputProps) {
             </IconButton>
           </InputAdornment>
         }
-        label={other.label}
       />
       <ZodErrors errors={errors} />
     </FormControl>

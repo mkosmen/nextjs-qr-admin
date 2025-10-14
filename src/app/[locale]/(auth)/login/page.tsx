@@ -2,8 +2,7 @@
 
 import { FormEvent, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, Link } from '@/i18n/navigation';
 import { API_LINKS, LINKS } from '@/lib/constant';
 import { postApi } from '@/lib/utils';
 import loginValidation from '@/validations/login';
@@ -49,7 +48,7 @@ export default function LoginPage() {
       });
 
       if (result.status) {
-        router.push(`/${LINKS.DASHBOARD}`);
+        router.push(LINKS.DASHBOARD);
       } else {
         setShowAlert(true);
         if ('messages' in result) {
@@ -92,7 +91,7 @@ export default function LoginPage() {
           }
           onChange={(e) => setEmail(e.target.value)}
           fullWidth
-          error={(errors?.email || []).length > 0}
+          errors={errors?.email}
         />
 
         <MhcPassword
@@ -103,7 +102,7 @@ export default function LoginPage() {
           onFocus={() => setErrors((prev) => ({ ...prev, password: undefined }))}
           onChange={(e) => setPassword(e.target.value)}
           fullWidth
-          error={(errors?.password || []).length > 0}
+          errors={errors?.password}
         />
 
         <Button variant="contained" type="submit" loading={loading}>

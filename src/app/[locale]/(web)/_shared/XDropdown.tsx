@@ -1,8 +1,8 @@
 import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n/navigation';
 import { Avatar } from '@mui/material';
 import { getApi } from '@/lib/utils';
-import { LINKS } from '@/lib/constant';
+import { API_LINKS, LINKS } from '@/lib/constant';
 import Dropdown from '@/components/ui/Dropdown';
 
 export default function XDropdown() {
@@ -12,17 +12,15 @@ export default function XDropdown() {
   const items = [
     {
       text: t('profile'),
-      onClick() {
-        router.push(`/${LINKS.PROFILE}`);
-      },
+      href: LINKS.PROFILE,
     },
     {
       text: t('signOut'),
       async onClick() {
-        const result = await getApi<boolean>('/api/auth/logout');
+        const result = await getApi<boolean>(API_LINKS.USER.LOGOUT);
 
         if (result) {
-          router.push(`/${LINKS.LOGIN}`);
+          router.push(LINKS.LOGIN);
         }
       },
     },

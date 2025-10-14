@@ -10,8 +10,11 @@ export const LINKS = {
 
 export const API_LINKS = {
   AUTH: {
-    LOGIN: '/api/auth/login',
-    SIGNUP: '/api/auth/signup',
+    LOGIN: 'api/auth/login',
+    SIGNUP: 'api/auth/signup',
+  },
+  USER: {
+    LOGOUT: 'api/auth/logout',
   },
 };
 

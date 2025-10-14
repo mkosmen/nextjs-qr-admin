@@ -2,13 +2,12 @@
 
 import { FormEvent, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
 import signupValidation from '@/validations/signup';
-import { useRouter } from 'next/navigation';
+import { useRouter, Link } from '@/i18n/navigation';
 import { API_LINKS, LINKS } from '@/lib/constant';
+import { postApi } from '@/lib/utils';
 import { Button, Box, Alert } from '@mui/material';
 import MhcInput from '@/components/ui/MhcInput';
-import { postApi } from '@/lib/utils';
 
 export default function SigUpPage() {
   const t = useTranslations();
@@ -57,7 +56,7 @@ export default function SigUpPage() {
       });
 
       if (result.status) {
-        router.push(`/${LINKS.LOGIN}`);
+        router.push(LINKS.LOGIN);
       } else {
         setSignUpError(result.message);
         if ('messages' in result) {
