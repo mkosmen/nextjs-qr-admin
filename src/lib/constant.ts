@@ -8,6 +8,13 @@ export const LINKS = {
   PROFILE: 'me',
 };
 
+export const API_LINKS = {
+  AUTH: {
+    LOGIN: '/api/auth/login',
+    SIGNUP: '/api/auth/signup',
+  },
+};
+
 export const REQUEST_TYPES = {
   GET: 'get',
   POST: 'post',
@@ -18,4 +25,5 @@ export const REQUEST_TYPES = {
 
 export const STATIC_KEYS = {
   TOKEN: 'token',
+  LANGAUGE: 'lang',
 };

@@ -6,8 +6,8 @@ export async function POST(req: NextRequest) {
     const data = await req.json();
     await postRequest('/auth/signup', { data });
 
-    return Response.json({ result: true });
-  } catch {
-    return Response.json({ result: false });
+    return Response.json({ status: true });
+  } catch (err: any) {
+    return Response.json(err);
   }
 }

@@ -1,6 +1,6 @@
 'use server';
 
-import { UserWithPassword } from '@/lib/types';
+import { User } from '@/lib/types';
 import { z } from 'zod';
 import { getTranslations } from 'next-intl/server';
 
@@ -19,7 +19,7 @@ const schema = async () => {
       })
       .max(31, {
         message: t('validation.between', {
-          field: t('password'),
+          field: t('name'),
           min: 3,
           max: 31,
         }),
@@ -62,7 +62,7 @@ const schema = async () => {
   });
 };
 
-export default async function register(props: UserWithPassword) {
+export default async function register(props: User) {
   const result = (await schema()).safeParse(props);
 
   if (!result.success) {

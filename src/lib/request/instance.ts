@@ -10,10 +10,8 @@ const options = {
 
 const instance = axios.create(options);
 
-// Add a request interceptor
 instance.interceptors.request.use(
   async function (config) {
-    console.log('REQ REQ');
     const cookieStorage = await cookies();
     const token = cookieStorage.get(STATIC_KEYS.TOKEN)?.value;
     if (token) {
@@ -23,20 +21,16 @@ instance.interceptors.request.use(
     return config;
   },
   function (error) {
-    // Do something with request error
     return Promise.reject(error);
   },
 );
 
-// Add a response interceptor
 instance.interceptors.response.use(
   function (response) {
-    // Any status code that lie within the range of 2xx cause this function to trigger
-    // Do something with response data
     return response;
   },
   function (error) {
-    return Promise.reject(error);
+    return Promise.reject(error.response.data);
   },
 );
 
