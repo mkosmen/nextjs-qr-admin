@@ -25,7 +25,4 @@ export interface User {
   email: string;
 }
 
-export interface MeUpdateDto extends Omit<SignUpDto, 'email'> {
-  newPassword: string;
-  newPassword2: string;
-}
+export type MeUpdateDto = Partial<Omit<SignUpDto, 'email'>>;

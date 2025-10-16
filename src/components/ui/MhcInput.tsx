@@ -5,7 +5,7 @@ import ZodErrors from '@/components/ZodErrors';
 interface FormInputProps extends Omit<TextFieldProps, 'variant'> {
   variant?: TextFieldVariants;
   errors?: string[];
-  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onChange?: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
 
 export default function FormInput(props: FormInputProps) {

@@ -34,7 +34,7 @@ export default async function RootLayout({ children }: Props) {
   }
 
   return (
-    <html className="h-full">
+    <html className="h-full" lang={locale}>
       <body className="h-full">
         <AppRouterCacheProvider>
           <NextIntlClientProvider messages={messages}>

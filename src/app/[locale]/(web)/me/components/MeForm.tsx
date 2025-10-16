@@ -5,20 +5,18 @@ import { LINKS } from '@/lib/constant';
 import { getApi, postApi } from '@/lib/utils';
 import { Button, Box, Alert } from '@mui/material';
 import MhcInput from '@/components/ui/MhcInput';
-import MhcPassword from '@/components/ui/MhcPassword';
 import { User } from '@/lib/types';
-import { useAppDispatch } from '@/lib/store/hooks';
+import { useAppDispatch, useAppStore } from '@/lib/store/hooks';
 import { setUser } from '@/lib/store/reducers/usersReducer';
 
 export default function MePage() {
   const t = useTranslations();
   const dispatch = useAppDispatch();
+  const store = useAppStore();
+  const user = store.getState().user.user;
 
-  const [name, setName] = useState('');
-  const [surname, setSurname] = useState('');
-  const [password, setPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [newPassword2, setNewPassword2] = useState('');
+  const [name, setName] = useState(user?.name);
+  const [surname, setSurname] = useState(user?.surname);
   const [loading, setLoading] = useState(false);
   const [signUpError, setSignUpError] = useState<string | undefined>('');
 
@@ -40,9 +38,6 @@ export default function MePage() {
       const validationResult = await meValidation({
         name,
         surname,
-        password,
-        newPassword,
-        newPassword2,
       });
 
       if (!validationResult.result) {
@@ -56,7 +51,7 @@ export default function MePage() {
         message?: string;
         messages?: Record<string, string[]>;
       }>(LINKS.API_ROUTE.USER.ME, {
-        body: JSON.stringify({ name, surname, password, newPassword, newPassword2 }),
+        body: JSON.stringify({ name, surname }),
       });
 
       if (result.status) {
@@ -82,7 +77,7 @@ export default function MePage() {
         component="form"
         noValidate
         autoComplete="off"
-        className="flex max-w-xl flex-col gap-2 rounded border border-gray-200 bg-white p-8"
+        className="flex max-w-sm flex-col gap-2"
         onSubmit={onFormSubmit}
       >
         {!!signUpError ? (
@@ -114,44 +109,17 @@ export default function MePage() {
           slotProps={{ htmlInput: { maxLength: 31 } }}
         />
 
-        <MhcPassword
-          id="newPassword"
-          label={t('newPassword')}
-          type="password"
-          value={newPassword}
-          onFocus={() => setErrors((prev) => ({ ...prev, newPassword: undefined }))}
-          onChange={(e) => setNewPassword(e.target.value)}
+        <MhcInput
+          id="email"
+          label={t('email')}
+          value={user?.email}
           fullWidth
-          errors={errors?.newPassword}
-          slotProps={{ input: { maxLength: 31 } }}
-        />
-
-        <MhcPassword
-          id="newPassword2"
-          label={t('newPasswordAgain')}
-          type="password"
-          value={newPassword2}
-          onFocus={() => setErrors((prev) => ({ ...prev, newPassword2: undefined }))}
-          onChange={(e) => setNewPassword2(e.target.value)}
-          fullWidth
-          errors={errors?.newPassword2}
-          slotProps={{ input: { maxLength: 31 } }}
-        />
-
-        <MhcPassword
-          id="password"
-          label={t('password')}
-          type="password"
-          value={password}
-          onFocus={() => setErrors((prev) => ({ ...prev, password: undefined }))}
-          onChange={(e) => setPassword(e.target.value)}
-          fullWidth
-          errors={errors?.password}
-          slotProps={{ input: { maxLength: 31 } }}
+          className="[&_input]:!cursor-not-allowed [&_input]:!text-gray-400"
+          slotProps={{ input: { readOnly: true } }}
         />
 
         <Button variant="contained" type="submit" loading={loading}>
-          {t('submit')}
+          {t('update')}
         </Button>
       </Box>
     </>
