@@ -19,7 +19,7 @@ export default function SigUpPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [signUpError, setSignUpError] = useState<string>();
+  const [signUpError, setSignUpError] = useState<string | undefined>('');
 
   const [errors, setErrors] = useState<{
     name?: string[];
@@ -48,7 +48,7 @@ export default function SigUpPage() {
         return;
       }
 
-      await postApi<{
+      const result = await postApi<{
         status: boolean;
         message?: string;
         messages?: Record<string, string[]>;
@@ -56,13 +56,18 @@ export default function SigUpPage() {
         body: JSON.stringify({ name, surname, email, password }),
       });
 
-      router.push(LINKS.WEB.LOGIN);
-    } catch (err: any) {
-      setSignUpError(err.message);
-      if ('messages' in err) {
-        setErrors((prev) => ({ ...prev, ...err.messages }));
+      if (result.status) {
+        router.push(LINKS.WEB.LOGIN);
+      } else {
+        setSignUpError(result.message);
+        if ('messages' in result) {
+          setErrors((prev) => ({ ...prev, ...result.messages }));
+        }
+
+        setLoading(false);
       }
-    } finally {
+    } catch (err: any) {
+      setSignUpError(err?.message);
       setLoading(false);
     }
   }

@@ -5,7 +5,7 @@ import { getLocale } from 'next-intl/server';
 import { LINKS, STATIC_KEYS } from './lib/constant';
 import { DEFAULT_LOCALE, LOCALES } from './lib/constant';
 
-const publicRoutes = ['/login', '/sign-up'];
+const publicRoutes = ['/login', '/signup'];
 
 const i18nMiddleware = (req: NextRequest) => {
   return createMiddleware({

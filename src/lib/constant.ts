@@ -4,7 +4,7 @@ export const DB = 'admin';
 export const LINKS = {
   WEB: {
     LOGIN: 'login',
-    SIGNUP: 'sign-up',
+    SIGNUP: 'signup',
     DASHBOARD: 'dashboard',
     PROFILE: 'me',
   },
