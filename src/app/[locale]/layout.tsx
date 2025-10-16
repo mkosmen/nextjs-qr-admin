@@ -4,28 +4,33 @@ import { getMessages } from 'next-intl/server';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import StoreProvider from '@/lib/providers/StoreProvider';
 import { store } from '@/lib/store';
-
 import { cookies } from 'next/headers';
-import { STATIC_KEYS } from '@/lib/constant';
+import { LINKS, STATIC_KEYS } from '@/lib/constant';
 import { getMe } from '@/lib/services/auth.service';
+import { User } from '@/lib/types';
+import { redirect } from '@/i18n/navigation';
+import { getLocale } from 'next-intl/server';
 
 import './globals.scss';
-import { User } from '@/lib/types';
 
 type Props = {
   children: ReactElement;
 };
 
 export default async function RootLayout({ children }: Props) {
-  const messages = await getMessages();
-
-  const isLogged = !!store.getState().user?.user;
-
-  const cookieStorage = await cookies();
-  const hasToken = cookieStorage.has(STATIC_KEYS.TOKEN);
   let user: User | undefined;
+
+  const locale = await getLocale();
+  const messages = await getMessages();
+  const cookieStorage = await cookies();
+  const isLogged = !!store.getState().user?.user;
+  const hasToken = cookieStorage.has(STATIC_KEYS.TOKEN);
   if (hasToken && !isLogged) {
-    user = await getMe();
+    try {
+      user = await getMe();
+    } catch {
+      redirect({ href: LINKS.WEB.LOGIN, locale });
+    }
   }
 
   return (

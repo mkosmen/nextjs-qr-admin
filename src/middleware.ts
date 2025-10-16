@@ -21,11 +21,11 @@ async function authMiddleware(req: NextRequest, response: NextResponse) {
   const locale = await getLocale();
 
   if (!token && !isPublicRoute) {
-    return NextResponse.redirect(new URL(`/${locale}/${LINKS.LOGIN}`, req.nextUrl));
+    return NextResponse.redirect(new URL(`/${locale}/${LINKS.WEB.LOGIN}`, req.nextUrl));
   }
 
   if (token && isPublicRoute) {
-    return NextResponse.redirect(new URL(`/${locale}/${LINKS.DASHBOARD}`, req.nextUrl));
+    return NextResponse.redirect(new URL(`/${locale}/${LINKS.WEB.DASHBOARD}`, req.nextUrl));
   }
 
   return response;

@@ -18,9 +18,9 @@ export default function XDropdown({ user }: { user: User }) {
     {
       text: t('signOut'),
       async onClick() {
-        const result = await getApi<boolean>(LINKS.API_ROUTE.AUTH.LOGOUT);
-
-        if (result) {
+        try {
+          await getApi<boolean>(LINKS.API_ROUTE.AUTH.LOGOUT);
+        } finally {
           router.push(LINKS.WEB.LOGIN);
         }
       },

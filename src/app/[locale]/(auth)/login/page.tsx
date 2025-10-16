@@ -8,15 +8,17 @@ import { Button, Box, Alert } from '@mui/material';
 import MhcInput from '@/components/ui/MhcInput';
 import MhcPassword from '@/components/ui/MhcPassword';
 import { LINKS } from '@/lib/constant';
-import { postApi } from '@/lib/utils';
-import { getMe } from '@/lib/services/auth.service';
+import { getApi, postApi } from '@/lib/utils';
 import { useAppDispatch } from '@/lib/store/hooks';
 import { setUser } from '@/lib/store/reducers/usersReducer';
+import { User } from '@/lib/types';
 
 export default function LoginPage() {
   const t = useTranslations();
   const router = useRouter();
   const dispatch = useAppDispatch();
+
+  dispatch(setUser());
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -51,7 +53,7 @@ export default function LoginPage() {
         body: JSON.stringify({ email, password }),
       });
 
-      const me = await getMe();
+      const me = await getApi<User>(LINKS.API_ROUTE.AUTH.ME);
       dispatch(setUser(me));
 
       if (result.status) {
