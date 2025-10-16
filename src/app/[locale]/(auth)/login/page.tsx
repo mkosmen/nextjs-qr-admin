@@ -18,10 +18,6 @@ export default function LoginPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    dispatch(setUser());
-  }, [dispatch]);
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<{
@@ -30,6 +26,10 @@ export default function LoginPage() {
   }>();
   const [loginError, setLoginError] = useState<string | undefined>('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    dispatch(setUser());
+  }, [dispatch]);
 
   async function onFormSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
