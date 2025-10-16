@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter, Link } from '@/i18n/navigation';
 import loginValidation from '@/validations/login';
@@ -18,7 +18,9 @@ export default function LoginPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  dispatch(setUser());
+  useEffect(() => {
+    dispatch(setUser());
+  }, [dispatch]);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -99,6 +101,7 @@ export default function LoginPage() {
               email: undefined,
             }))
           }
+          autoFocus
           onChange={(e) => setEmail(e.target.value)}
           fullWidth
           errors={errors?.email}

@@ -8,6 +8,7 @@ import { LINKS } from '@/lib/constant';
 import { postApi } from '@/lib/utils';
 import { Button, Box, Alert } from '@mui/material';
 import MhcInput from '@/components/ui/MhcInput';
+import MhcPassword from '@/components/ui/MhcPassword';
 
 export default function SigUpPage() {
   const t = useTranslations();
@@ -86,7 +87,6 @@ export default function SigUpPage() {
         <MhcInput
           id="name"
           label={t('name')}
-          variant="outlined"
           value={name}
           autoFocus
           onFocus={() => setErrors((prev) => ({ ...prev, name: undefined }))}
@@ -99,7 +99,6 @@ export default function SigUpPage() {
         <MhcInput
           id="surname"
           label={t('surname')}
-          variant="outlined"
           value={surname}
           onFocus={() => setErrors((prev) => ({ ...prev, surname: undefined }))}
           onChange={(e) => setSurname(e.target.value)}
@@ -111,7 +110,6 @@ export default function SigUpPage() {
         <MhcInput
           id="email"
           label={t('email')}
-          variant="outlined"
           value={email}
           onFocus={() => setErrors((prev) => ({ ...prev, email: undefined }))}
           onChange={(e) => setEmail(e.target.value)}
@@ -120,17 +118,16 @@ export default function SigUpPage() {
           slotProps={{ htmlInput: { maxLength: 31 } }}
         />
 
-        <MhcInput
+        <MhcPassword
           id="password"
           label={t('password')}
           type="password"
-          variant="outlined"
           value={password}
           onFocus={() => setErrors((prev) => ({ ...prev, password: undefined }))}
           onChange={(e) => setPassword(e.target.value)}
           fullWidth
           errors={errors?.password}
-          slotProps={{ htmlInput: { maxLength: 31 } }}
+          slotProps={{ input: { maxLength: 31 } }}
         />
 
         <Button variant="contained" type="submit" loading={loading}>
