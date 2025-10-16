@@ -2,8 +2,7 @@
 
 import { ReactElement } from 'react';
 import XHeader from './_shared/XHeader';
-import XBody from './_shared/XBody';
-import XLeft from './_shared/XLeft';
+import XSideBar from './_shared/XSideBar';
 import XFooter from './_shared/XFooter';
 import { useAppSelector } from '@/lib/store/hooks';
 
@@ -17,14 +16,14 @@ export default function RootLayout({ children }: Props) {
   const user = useAppSelector((s) => s.user);
 
   return (
-    <div className="flex h-full w-full flex-col">
-      <XHeader user={user.user!} />
-      <div className="flex h-full flex-1">
-        <XLeft />
-        <XBody>
-          <div>{children}</div>
-        </XBody>
-        <XFooter />
+    <div className="flex h-full w-full">
+      <XSideBar />
+      <div className="flex h-full w-full flex-1 flex-col">
+        <XHeader user={user.user!} />
+        <div className="flex-1 overflow-hidden">
+          <main className="overflow-y-auto p-2">{children}</main>
+          <XFooter />
+        </div>
       </div>
     </div>
   );

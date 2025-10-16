@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const data = await req.json();
-    const result = await postRequest<SigInResponse>(LINKS.API.AUTH.LOGIN, { data });
+    const result = await postRequest<SigInResponse>(LINKS.REST_API.AUTH.LOGIN, { data });
 
     cookieStorage.set(STATIC_KEYS.TOKEN, result.token!);
 

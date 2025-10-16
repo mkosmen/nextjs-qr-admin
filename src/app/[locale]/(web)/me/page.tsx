@@ -1,3 +1,11 @@
-export default function DashBoard() {
-  return <div>me</div>;
+'use client';
+
+import MeForm from './components/MeForm';
+
+export default function MePage() {
+  return (
+    <>
+      <MeForm />
+    </>
+  );
 }

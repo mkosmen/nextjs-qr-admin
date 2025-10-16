@@ -24,3 +24,8 @@ export interface User {
   surname: string;
   email: string;
 }
+
+export interface MeUpdateDto extends Omit<SignUpDto, 'email'> {
+  newPassword: string;
+  newPassword2: string;
+}

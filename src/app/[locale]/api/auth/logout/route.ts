@@ -4,7 +4,7 @@ import { LINKS, STATIC_KEYS } from '@/lib/constant';
 
 export async function GET() {
   try {
-    await getRequest<boolean>(LINKS.API.AUTH.LOGOUT);
+    await getRequest<boolean>(LINKS.REST_API.AUTH.LOGOUT);
   } finally {
     const cookieStorage = await cookies();
     cookieStorage.delete(STATIC_KEYS.TOKEN);

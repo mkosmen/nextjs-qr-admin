@@ -5,7 +5,7 @@ import { LINKS } from '@/lib/constant';
 export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
-    await postRequest(LINKS.API.AUTH.SIGNUP, { data });
+    await postRequest(LINKS.REST_API.AUTH.SIGNUP, { data });
 
     return Response.json({ status: true });
   } catch (error: any) {

@@ -13,15 +13,19 @@ export const LINKS = {
       LOGIN: 'api/auth/login',
       SIGNUP: 'api/auth/signup',
       LOGOUT: 'api/auth/logout',
-      ME: 'api/auth/me',
+    },
+    USER: {
+      ME: 'api/user/me',
     },
   },
-  API: {
+  REST_API: {
     AUTH: {
       LOGIN: 'auth/signin',
       SIGNUP: 'auth/signup',
       LOGOUT: 'auth/logout',
-      ME: 'auth/me',
+    },
+    USER: {
+      ME: 'user/me',
     },
   },
 };

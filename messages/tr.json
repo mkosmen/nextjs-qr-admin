@@ -11,9 +11,12 @@
   "signOut": "Çıkış Yap",
   "profile": "Profil",
   "enErrorOccured": "Bir hata oluştu",
+  "newPassword": "Yeni Şifre",
+  "newPasswordAgain": "Yeni Şifre Tekrar",
   "validation": {
     "email": "Lütfen geçerli bir E-Posta adresi girin",
-    "between": "{field} en az {min} en fazla {max} karakterden oluşablilir"
+    "between": "{field} en az {min} en fazla {max} karakterden oluşablilir",
+    "passwordRefine": "Şifreler eşleşmiyor"
   },
   "NotFoundPage": {
     "title": "Sayfa bulunamadı",

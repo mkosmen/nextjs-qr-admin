@@ -55,7 +55,7 @@ export default function LoginPage() {
         body: JSON.stringify({ email, password }),
       });
 
-      const me = await getApi<User>(LINKS.API_ROUTE.AUTH.ME);
+      const me = await getApi<User>(LINKS.API_ROUTE.USER.ME);
       dispatch(setUser(me));
 
       if (result.status) {
