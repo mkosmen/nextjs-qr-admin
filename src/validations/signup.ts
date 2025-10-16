@@ -1,6 +1,6 @@
 'use server';
 
-import { User } from '@/lib/types';
+import { SignUpDto } from '@/lib/types';
 import { z } from 'zod';
 import { getTranslations } from 'next-intl/server';
 
@@ -62,7 +62,7 @@ const schema = async () => {
   });
 };
 
-export default async function register(props: User) {
+export default async function register(props: SignUpDto) {
   const result = (await schema()).safeParse(props);
 
   if (!result.success) {

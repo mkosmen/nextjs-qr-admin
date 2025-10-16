@@ -1,13 +1,8 @@
 import { NextRequest } from 'next/server';
 import { postRequest } from '@/lib/request';
+import { LINKS } from '@/lib/constant';
 
 export async function POST(req: NextRequest) {
-  try {
-    const data = await req.json();
-    await postRequest('/auth/signup', { data });
-
-    return Response.json({ status: true });
-  } catch (err: any) {
-    return Response.json(err);
-  }
+  const data = await req.json();
+  await postRequest(LINKS.API.AUTH.SIGNUP, { data });
 }

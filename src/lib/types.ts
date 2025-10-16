@@ -1,4 +1,4 @@
-export interface SigIn {
+export interface SignInDto {
   email: string;
   password: string;
 }
@@ -8,7 +8,7 @@ export interface SigInResponse {
   token?: string;
 }
 
-export interface User {
+export interface SignUpDto {
   name: string;
   surname: string;
   email: string;
@@ -17,4 +17,10 @@ export interface User {
 
 export interface ResultResponse {
   result: boolean;
+}
+
+export interface User {
+  name: string;
+  surname: string;
+  email: string;
 }

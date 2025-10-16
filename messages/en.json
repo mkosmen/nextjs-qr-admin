@@ -10,7 +10,7 @@
   "signUp": "Sign Up",
   "signOut": "Sign Out",
   "profile": "Profile",
-  "loginFailed": "Account not found. Please check your informations",
+  "enErrorOccured": "An error occcured",
   "validation": {
     "email": "Please enter a valid email address",
     "between": "{field} must be between {min} and {max} characters"

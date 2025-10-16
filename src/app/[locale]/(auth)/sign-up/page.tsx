@@ -4,7 +4,7 @@ import { FormEvent, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import signupValidation from '@/validations/signup';
 import { useRouter, Link } from '@/i18n/navigation';
-import { API_LINKS, LINKS } from '@/lib/constant';
+import { LINKS } from '@/lib/constant';
 import { postApi } from '@/lib/utils';
 import { Button, Box, Alert } from '@mui/material';
 import MhcInput from '@/components/ui/MhcInput';
@@ -47,21 +47,19 @@ export default function SigUpPage() {
         return;
       }
 
-      const result = await postApi<{
+      await postApi<{
         status: boolean;
         message?: string;
         messages?: Record<string, string[]>;
-      }>(API_LINKS.AUTH.SIGNUP, {
+      }>(LINKS.API_ROUTE.AUTH.SIGNUP, {
         body: JSON.stringify({ name, surname, email, password }),
       });
 
-      if (result.status) {
-        router.push(LINKS.LOGIN);
-      } else {
-        setSignUpError(result.message);
-        if ('messages' in result) {
-          setErrors((prev) => ({ ...prev, ...result.messages }));
-        }
+      router.push(LINKS.WEB.LOGIN);
+    } catch (err: any) {
+      setSignUpError(err.message);
+      if ('messages' in err) {
+        setErrors((prev) => ({ ...prev, ...err.messages }));
       }
     } finally {
       setLoading(false);

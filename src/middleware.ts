@@ -41,6 +41,11 @@ export default async function middleware(request: NextRequest) {
   return await authMiddleware(request, response);
 }
 
+// export const config = {
+//   matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
+// };
+
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
+  // Match only internationalized pathnames
+  matcher: '/((?!api|trpc|_next|_vercel|.*\\..*).*)',
 };

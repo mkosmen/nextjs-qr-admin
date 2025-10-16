@@ -10,7 +10,7 @@
   "signUp": "Üye Ol",
   "signOut": "Çıkış Yap",
   "profile": "Profil",
-  "loginFailed": "Üye kaydı bulunamadı",
+  "enErrorOccured": "Bir hata oluştu",
   "validation": {
     "email": "Lütfen geçerli bir E-Posta adresi girin",
     "between": "{field} en az {min} en fazla {max} karakterden oluşablilir"

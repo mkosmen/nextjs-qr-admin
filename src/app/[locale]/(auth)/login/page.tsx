@@ -3,16 +3,20 @@
 import { FormEvent, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter, Link } from '@/i18n/navigation';
-import { API_LINKS, LINKS } from '@/lib/constant';
-import { postApi } from '@/lib/utils';
 import loginValidation from '@/validations/login';
 import { Button, Box, Alert } from '@mui/material';
 import MhcInput from '@/components/ui/MhcInput';
 import MhcPassword from '@/components/ui/MhcPassword';
+import { LINKS } from '@/lib/constant';
+import { postApi } from '@/lib/utils';
+import { getMe } from '@/lib/services/auth.service';
+import { useAppDispatch } from '@/lib/store/hooks';
+import { setUser } from '@/lib/store/reducers/usersReducer';
 
 export default function LoginPage() {
   const t = useTranslations();
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,13 +24,13 @@ export default function LoginPage() {
     email?: string[];
     password?: string[];
   }>();
-  const [showAlert, setShowAlert] = useState(false);
+  const [loginError, setLoginError] = useState<string | undefined>('');
   const [loading, setLoading] = useState(false);
 
   async function onFormSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    setShowAlert(false);
+    setLoginError('');
     setErrors(() => ({}));
 
     const validationResult = await loginValidation({
@@ -43,20 +47,24 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const result = await postApi(API_LINKS.AUTH.LOGIN, {
+      const result = await postApi(LINKS.API_ROUTE.AUTH.LOGIN, {
         body: JSON.stringify({ email, password }),
       });
 
+      const me = await getMe();
+      dispatch(setUser(me));
+
       if (result.status) {
-        router.push(LINKS.DASHBOARD);
+        router.push(LINKS.WEB.DASHBOARD);
       } else {
-        setShowAlert(true);
-        if ('messages' in result) {
+        setLoginError(result?.message);
+
+        if ('messages' in e) {
           setErrors((prev) => ({ ...prev, ...result.messages }));
         }
       }
-    } catch (e: any) {
-      console.log('HATA VAR', e);
+    } catch {
+      setLoginError(t('enErrorOccured'));
     } finally {
       setLoading(false);
     }
@@ -73,9 +81,9 @@ export default function LoginPage() {
       >
         <p className="mb-4 w-full text-lg font-medium">{t('signIn')}</p>
 
-        {showAlert ? (
-          <Alert severity="warning" onClose={() => setShowAlert(false)} className="my-2">
-            {t('loginFailed')}
+        {!!loginError ? (
+          <Alert severity="warning" onClose={() => setLoginError('')} className="my-2">
+            {loginError}
           </Alert>
         ) : null}
 

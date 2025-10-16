@@ -2,19 +2,27 @@ export const HOST = 'mongodb://127.0.0.1:27017/qrmenu';
 export const DB = 'admin';
 
 export const LINKS = {
-  LOGIN: 'login',
-  SIGNUP: 'sign-up',
-  DASHBOARD: 'dashboard',
-  PROFILE: 'me',
-};
-
-export const API_LINKS = {
-  AUTH: {
-    LOGIN: 'api/auth/login',
-    SIGNUP: 'api/auth/signup',
+  WEB: {
+    LOGIN: 'login',
+    SIGNUP: 'sign-up',
+    DASHBOARD: 'dashboard',
+    PROFILE: 'me',
   },
-  USER: {
-    LOGOUT: 'api/auth/logout',
+  API_ROUTE: {
+    AUTH: {
+      LOGIN: 'api/auth/login',
+      SIGNUP: 'api/auth/signup',
+      LOGOUT: 'api/auth/logout',
+      ME: 'api/auth/me',
+    },
+  },
+  API: {
+    AUTH: {
+      LOGIN: 'auth/signin',
+      SIGNUP: 'auth/signup',
+      LOGOUT: 'auth/logout',
+      ME: 'auth/me',
+    },
   },
 };
 

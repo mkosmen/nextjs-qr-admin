@@ -5,7 +5,6 @@ import { STATIC_KEYS } from '../constant';
 const options = {
   baseURL: process.env.NEXT_PUBLIC_BASE_API_URL,
   timeout: +(process.env.NEXT_PUBLIC_TIMEOUT || 1000),
-  headers: { 'X-Custom-Header': 'foobar' },
 };
 
 const instance = axios.create(options);
