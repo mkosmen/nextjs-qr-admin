@@ -61,6 +61,7 @@ export default function LoginPage() {
       if (result.status) {
         router.push(LINKS.WEB.DASHBOARD);
       } else {
+        setLoading(false);
         setLoginError(result?.message);
 
         if ('messages' in e) {
@@ -68,9 +69,8 @@ export default function LoginPage() {
         }
       }
     } catch {
-      setLoginError(t('enErrorOccured'));
-    } finally {
       setLoading(false);
+      setLoginError(t('enErrorOccured'));
     }
   }
 
