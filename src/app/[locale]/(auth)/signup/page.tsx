@@ -142,7 +142,7 @@ export default function SigUpPage() {
 
       <p className="mt-4 text-center text-sm text-gray-700 opacity-50">
         {t('haveAnAccount')}
-        <Link className="ml-1 font-medium underline" href="/login">
+        <Link className="ml-1 font-medium underline" href={LINKS.WEB.LOGIN}>
           {t('signIn')}
         </Link>
       </p>

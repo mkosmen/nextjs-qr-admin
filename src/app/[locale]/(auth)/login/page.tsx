@@ -125,7 +125,7 @@ export default function LoginPage() {
 
       <p className="mt-4 text-center text-sm text-gray-700 opacity-50">
         {t('dontHaveAnAccount')}
-        <Link className="ml-1 font-medium underline" href="/signup">
+        <Link className="ml-1 font-medium underline" href={LINKS.WEB.SIGNUP}>
           {t('signUp')}
         </Link>
       </p>
