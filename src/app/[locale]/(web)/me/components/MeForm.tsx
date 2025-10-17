@@ -9,7 +9,7 @@ import { User } from '@/lib/types';
 import { useAppDispatch, useAppStore } from '@/lib/store/hooks';
 import { setUser } from '@/lib/store/reducers/usersReducer';
 
-export default function MePage() {
+export default function MeForm() {
   const t = useTranslations();
   const dispatch = useAppDispatch();
   const store = useAppStore();
