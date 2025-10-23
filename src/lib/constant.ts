@@ -16,6 +16,9 @@ export const LINKS = {
     },
     USER: {
       ME: 'api/user/me',
+      PASSWORD: {
+        VERIFY: 'api/user/password/verify',
+      },
     },
   },
   REST_API: {
@@ -26,6 +29,9 @@ export const LINKS = {
     },
     USER: {
       ME: 'user/me',
+      PASSWORD: {
+        VERIFY: 'user/password/verify',
+      },
     },
   },
 };

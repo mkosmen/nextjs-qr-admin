@@ -70,7 +70,7 @@ export default function LoginPage() {
       }
     } catch {
       setLoading(false);
-      setLoginError(t('enErrorOccured'));
+      setLoginError(t('anErrorOccured'));
     }
   }
 

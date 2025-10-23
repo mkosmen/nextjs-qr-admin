@@ -11,7 +11,7 @@
   "signUp": "Üye Ol",
   "signOut": "Çıkış Yap",
   "profile": "Profil",
-  "enErrorOccured": "Bir hata oluştu",
+  "anErrorOccured": "Bir hata oluştu",
   "newPassword": "Yeni Şifre",
   "newPasswordAgain": "Yeni Şifre Tekrar",
   "validation": {
@@ -25,5 +25,15 @@
   },
   "myInfo": "Bilgilerim",
   "changePassword": "Şifre Değiştir",
-  "others": "Diğer"
+  "others": "Diğer",
+  "cancel": "İptal Et",
+  "continue": "Devam Et",
+  "verifyYourPassword": {
+    "title": "Şifrenizi Doğrulayın",
+    "content": "Bu işleme devam edebilmek için şifrenizi doğrulamanız gerekiyor"
+  },
+  "reset": "Sıfırla",
+  "meResetTooltip": "Kullanıcı bilgilerinizi eski haline getirin",
+  "meUpdateSuccess": "Kullanıcı bilgileri güncellendi",
+  "meUpdateFailed": "Kullanıcı bilgileri güncellenemedi"
 }

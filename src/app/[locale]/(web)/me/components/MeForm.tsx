@@ -1,74 +1,59 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import meValidation from '@/validations/me';
-import { LINKS } from '@/lib/constant';
-import { getApi, postApi } from '@/lib/utils';
-import { Button, Box, Alert } from '@mui/material';
+import { Button, Box, Tooltip } from '@mui/material';
 import MhcInput from '@/components/ui/MhcInput';
 import { User } from '@/lib/types';
-import { useAppDispatch, useAppStore } from '@/lib/store/hooks';
-import { setUser } from '@/lib/store/reducers/usersReducer';
 
-export default function MeForm() {
+interface Props {
+  loading: boolean;
+  errors?: any;
+  user: User;
+  isDisabled?: boolean;
+  onSubmit: (inputs: { name: string; surname: string }) => void;
+}
+
+export default function MeForm(props: Props) {
   const t = useTranslations();
-  const dispatch = useAppDispatch();
-  const store = useAppStore();
-  const user = store.getState().user.user;
 
-  const [name, setName] = useState(user?.name);
-  const [surname, setSurname] = useState(user?.surname);
-  const [loading, setLoading] = useState(false);
-  const [signUpError, setSignUpError] = useState<string | undefined>('');
-
+  const [name, setName] = useState(props.user?.name);
+  const [surname, setSurname] = useState(props.user?.surname);
+  const [validationLoading, setValidationLoading] = useState(false);
   const [errors, setErrors] = useState<{
     name?: string[];
     surname?: string[];
-    password?: string[];
-    newPassword?: string[];
-    newPassword2?: string[];
   }>();
 
+  useEffect(() => {
+    setErrors((prev) => ({ ...prev, ...props.errors }));
+  }, [props.errors]);
+
   async function onFormSubmit(e: FormEvent<HTMLFormElement>) {
-    try {
-      e.preventDefault();
-      setLoading(true);
+    e.preventDefault();
 
-      setErrors(() => ({}));
+    setValidationLoading(true);
+    setErrors({});
 
-      const validationResult = await meValidation({
-        name,
-        surname,
-      });
+    const validationResult = await meValidation({
+      name,
+      surname,
+    });
 
-      if (!validationResult.result) {
-        setErrors(() => ({ ...validationResult.errors }));
+    if (!validationResult.result) {
+      setValidationLoading(false);
+      setErrors(() => ({ ...validationResult.errors }));
 
-        return;
-      }
-
-      const result = await postApi<{
-        status: boolean;
-        message?: string;
-        messages?: Record<string, string[]>;
-      }>(LINKS.API_ROUTE.USER.ME, {
-        body: JSON.stringify({ name, surname }),
-      });
-
-      if (result.status) {
-        const me = await getApi<User>(LINKS.API_ROUTE.USER.ME);
-        dispatch(setUser(me));
-      } else {
-        setSignUpError(result.message);
-        if ('messages' in result) {
-          setErrors((prev) => ({ ...prev, ...result.messages }));
-        }
-
-        setLoading(false);
-      }
-    } catch (err: any) {
-      setSignUpError(err?.message);
-      setLoading(false);
+      return;
     }
+
+    setValidationLoading(false);
+    props.onSubmit({ name: name!, surname: surname! });
+  }
+
+  function resetHandler() {
+    setErrors({});
+    setName(props.user.name);
+    setSurname(props.user.surname);
   }
 
   return (
@@ -77,15 +62,9 @@ export default function MeForm() {
         component="form"
         noValidate
         autoComplete="off"
-        className="flex max-w-sm flex-col gap-2"
+        className="flex flex-col gap-3"
         onSubmit={onFormSubmit}
       >
-        {!!signUpError ? (
-          <Alert severity="warning" onClose={() => setSignUpError('')} className="my-2">
-            {signUpError}
-          </Alert>
-        ) : null}
-
         <MhcInput
           id="name"
           label={t('name')}
@@ -112,15 +91,34 @@ export default function MeForm() {
         <MhcInput
           id="email"
           label={t('email')}
-          value={user?.email}
+          value={props.user?.email}
           fullWidth
           className="[&_input]:!cursor-not-allowed [&_input]:!text-gray-400"
           slotProps={{ input: { readOnly: true } }}
         />
 
-        <Button variant="contained" type="submit" loading={loading}>
-          {t('update')}
-        </Button>
+        <div className="flex gap-2">
+          <Tooltip title={t('meResetTooltip')}>
+            <Button
+              variant="outlined"
+              disabled={props.isDisabled}
+              color="error"
+              loading={validationLoading || props.loading}
+              onClick={resetHandler}
+            >
+              {t('reset')}
+            </Button>
+          </Tooltip>
+          <Button
+            variant="contained"
+            type="submit"
+            disabled={props.isDisabled}
+            loading={validationLoading || props.loading}
+            className="flex-1"
+          >
+            {t('update')}
+          </Button>
+        </div>
       </Box>
     </>
   );

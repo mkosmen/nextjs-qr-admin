@@ -1,6 +1,5 @@
 'use server';
 
-import { MeUpdateDto } from '@/lib/types';
 import { z } from 'zod';
 import { getTranslations } from 'next-intl/server';
 
@@ -8,35 +7,18 @@ const schema = async () => {
   const t = await getTranslations();
 
   return z.object({
-    name: z
+    password: z
       .string()
       .min(3, {
         message: t('validation.between', {
-          field: t('name'),
+          field: t('password'),
           min: 3,
           max: 31,
         }),
       })
       .max(31, {
         message: t('validation.between', {
-          field: t('name'),
-          min: 3,
-          max: 31,
-        }),
-      }),
-
-    surname: z
-      .string()
-      .min(3, {
-        message: t('validation.between', {
-          field: t('surname'),
-          min: 3,
-          max: 31,
-        }),
-      })
-      .max(31, {
-        message: t('validation.between', {
-          field: t('surname'),
+          field: t('password'),
           min: 3,
           max: 31,
         }),
@@ -44,8 +26,8 @@ const schema = async () => {
   });
 };
 
-export default async function register(props: MeUpdateDto) {
-  const result = (await schema()).safeParse(props);
+export default async function register(password: string) {
+  const result = (await schema()).safeParse({ password });
 
   if (!result.success) {
     return {
