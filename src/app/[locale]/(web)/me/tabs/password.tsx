@@ -1,10 +1,15 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback, useContext, useEffect } from 'react';
 import { Alert } from '@mui/material';
 import PasswordForm from '../components/PasswordForm';
+import { putApi } from '@/lib/utils';
+import { LINKS } from '@/lib/constant';
+import { ToastContext } from '@/lib/providers/ToastProvider';
+import { useTranslations } from 'next-intl';
 
 interface Props {
-  isDisabled: boolean;
-  setVerifyDialogStatus: (status: boolean) => void;
+  verify: boolean;
+  onComplete: () => void;
+  onSubmit: () => void;
 }
 
 interface UpdateDto {
@@ -12,17 +17,52 @@ interface UpdateDto {
   newPasswordAgain: string;
 }
 
-export default function PasswordTab({ isDisabled, setVerifyDialogStatus }: Props) {
-  const updateDto = useRef<UpdateDto | null>(null);
+export default function PasswordTab({ verify, onComplete, onSubmit }: Props) {
+  const t = useTranslations();
+  const toast = useContext(ToastContext);
 
+  const updateDto = useRef<UpdateDto | null>(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
   function onSubmitHandler(dto: UpdateDto) {
     updateDto.current = dto;
-    setVerifyDialogStatus(true);
+    onSubmit();
   }
+
+  const runUpdate = useCallback(async () => {
+    try {
+      const result = await putApi<{
+        status: boolean;
+        message?: string;
+        messages?: Record<string, string[]>;
+      }>(LINKS.API_ROUTE.USER.PASSWORD.VERIFY, {
+        body: JSON.stringify(updateDto.current),
+      });
+
+      if (result.status) {
+        toast?.showToast(t('meUpdateSuccess'));
+      } else {
+        setError(result?.message || t('meUpdateFailed'));
+
+        if ('messages' in result) {
+          setErrors((prev) => ({ ...prev, ...result.messages }));
+        }
+      }
+    } catch (error: any) {
+      setError(error?.message || t('anErrorOccured'));
+    } finally {
+      setLoading(false);
+      onComplete();
+    }
+  }, [onComplete, t, toast]);
+
+  useEffect(() => {
+    if (verify) {
+      runUpdate();
+    }
+  }, [verify, runUpdate]);
 
   return (
     <div className="max-w-sm">
@@ -35,7 +75,7 @@ export default function PasswordTab({ isDisabled, setVerifyDialogStatus }: Props
         onSubmit={onSubmitHandler}
         loading={loading}
         errors={errors}
-        isDisabled={isDisabled}
+        isDisabled={verify}
       />
     </div>
   );

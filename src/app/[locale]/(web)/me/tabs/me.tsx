@@ -11,10 +11,9 @@ import { ToastContext } from '@/lib/providers/ToastProvider';
 
 interface Props {
   user: User;
-  isDisabled: boolean;
   verify: boolean;
-  onDone: (status: boolean) => void;
-  setVerifyDialogStatus: (status: boolean) => void;
+  onComplete: () => void;
+  onSubmit: () => void;
 }
 
 interface UpdateDto {
@@ -22,7 +21,7 @@ interface UpdateDto {
   surname: string;
 }
 
-export default function MeTab({ user, verify, isDisabled, onDone, setVerifyDialogStatus }: Props) {
+export default function MeTab({ user, verify, onComplete, onSubmit }: Props) {
   const t = useTranslations();
   const dispatch = useAppDispatch();
   const toast = useContext(ToastContext);
@@ -34,7 +33,7 @@ export default function MeTab({ user, verify, isDisabled, onDone, setVerifyDialo
 
   function onSubmitHandler(dto: UpdateDto) {
     updateDto.current = dto;
-    setVerifyDialogStatus(true);
+    onSubmit();
   }
 
   const runUpdate = useCallback(async () => {
@@ -63,9 +62,9 @@ export default function MeTab({ user, verify, isDisabled, onDone, setVerifyDialo
       setError(error?.message || t('anErrorOccured'));
     } finally {
       setLoading(false);
-      onDone(false);
+      onComplete();
     }
-  }, [dispatch, onDone, t, toast]);
+  }, [dispatch, onComplete, t, toast]);
 
   useEffect(() => {
     if (verify) {
@@ -86,7 +85,7 @@ export default function MeTab({ user, verify, isDisabled, onDone, setVerifyDialo
         loading={loading}
         errors={formErrors}
         user={user!}
-        isDisabled={isDisabled}
+        isDisabled={verify}
       />
     </div>
   );

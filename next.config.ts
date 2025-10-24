@@ -2,8 +2,9 @@ import { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
 
 const nextConfig: NextConfig = {
-  reactStrictMode: false,
-  sassOptions: { quietDeps: true },
+  sassOptions: {
+    implementation: 'sass-embedded',
+  },
   crossOrigin: 'anonymous',
   allowedDevOrigins: ['172.22.128.1', '*.172.22.128.1'],
   async headers() {

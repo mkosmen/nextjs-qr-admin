@@ -3,6 +3,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import StoreProvider from '@/lib/providers/StoreProvider';
+import ToastProvider from '@/lib/providers/ToastProvider';
 import { store } from '@/lib/store';
 import { cookies } from 'next/headers';
 import { LINKS, STATIC_KEYS } from '@/lib/constant';
@@ -11,8 +12,7 @@ import { User } from '@/lib/types';
 import { redirect } from '@/i18n/navigation';
 import { getLocale } from 'next-intl/server';
 
-import './globals.scss';
-import ToastProvider from '@/lib/providers/ToastProvider';
+import '@/assets/global.scss';
 
 type Props = {
   children: ReactElement;

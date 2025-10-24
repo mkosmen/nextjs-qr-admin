@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import LocalizerDropdown from './_shared/LocalizerDropdown';
 
-import '../globals.scss';
+import '@/assets/global.scss';
 
 type Props = {
   children: ReactElement;

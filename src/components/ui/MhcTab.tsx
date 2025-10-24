@@ -2,8 +2,7 @@
 
 import { PropsWithChildren, SyntheticEvent, useState } from 'react';
 import { Box, styled, Tab, TabProps, Tabs } from '@mui/material';
-import { TabContext } from '@mui/lab';
-
+import { TabContext, TabPanel } from '@mui/lab';
 export interface Props {
   tabs: TabProp[];
   onTabChange?: (event: SyntheticEvent, newValue: number) => void;
@@ -15,6 +14,8 @@ const TabItem = styled((props: TabProps) => <Tab disableRipple {...props} />)(()
   textTransform: 'none',
   minWidth: 0,
 }));
+
+export { TabPanel };
 
 export default function MhcTab({ tabs, onTabChange, children }: Props & PropsWithChildren) {
   const [activeTab, setActiveTab] = useState(0);

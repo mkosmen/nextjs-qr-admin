@@ -13,26 +13,26 @@ interface Props {
   onSubmit: (inputs: { name: string; surname: string }) => void;
 }
 
-export default function MeForm(props: Props) {
+export default function MeForm({ loading, errors, user, isDisabled, onSubmit }: Props) {
   const t = useTranslations();
 
-  const [name, setName] = useState(props.user?.name);
-  const [surname, setSurname] = useState(props.user?.surname);
+  const [name, setName] = useState(user?.name);
+  const [surname, setSurname] = useState(user?.surname);
   const [validationLoading, setValidationLoading] = useState(false);
-  const [errors, setErrors] = useState<{
+  const [formErrors, setFormErrors] = useState<{
     name?: string[];
     surname?: string[];
   }>();
 
   useEffect(() => {
-    setErrors((prev) => ({ ...prev, ...props.errors }));
-  }, [props.errors]);
+    setFormErrors((prev) => ({ ...prev, ...errors }));
+  }, [errors]);
 
   async function onFormSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     setValidationLoading(true);
-    setErrors({});
+    setFormErrors({});
 
     const validationResult = await meValidation({
       name,
@@ -41,19 +41,19 @@ export default function MeForm(props: Props) {
 
     if (!validationResult.result) {
       setValidationLoading(false);
-      setErrors(() => ({ ...validationResult.errors }));
+      setFormErrors(() => ({ ...validationResult.errors }));
 
       return;
     }
 
     setValidationLoading(false);
-    props.onSubmit({ name: name!, surname: surname! });
+    onSubmit({ name: name!, surname: surname! });
   }
 
   function resetHandler() {
-    setErrors({});
-    setName(props.user.name);
-    setSurname(props.user.surname);
+    setFormErrors({});
+    setName(user.name);
+    setSurname(user.surname);
   }
 
   return (
@@ -70,10 +70,10 @@ export default function MeForm(props: Props) {
           label={t('name')}
           value={name}
           autoFocus
-          onFocus={() => setErrors((prev) => ({ ...prev, name: undefined }))}
+          onFocus={() => setFormErrors((prev) => ({ ...prev, name: undefined }))}
           onChange={(e) => setName(e.target.value)}
           fullWidth
-          errors={errors?.name}
+          errors={formErrors?.name}
           slotProps={{ htmlInput: { maxLength: 31 } }}
         />
 
@@ -81,17 +81,17 @@ export default function MeForm(props: Props) {
           id="surname"
           label={t('surname')}
           value={surname}
-          onFocus={() => setErrors((prev) => ({ ...prev, surname: undefined }))}
+          onFocus={() => setFormErrors((prev) => ({ ...prev, surname: undefined }))}
           onChange={(e) => setSurname(e.target.value)}
           fullWidth
-          errors={errors?.surname}
+          errors={formErrors?.surname}
           slotProps={{ htmlInput: { maxLength: 31 } }}
         />
 
         <MhcInput
           id="email"
           label={t('email')}
-          value={props.user?.email}
+          value={user?.email}
           fullWidth
           className="[&_input]:!cursor-not-allowed [&_input]:!text-gray-400"
           slotProps={{ input: { readOnly: true } }}
@@ -101,9 +101,9 @@ export default function MeForm(props: Props) {
           <Tooltip title={t('meResetTooltip')}>
             <Button
               variant="outlined"
-              disabled={props.isDisabled}
+              disabled={isDisabled}
               color="error"
-              loading={validationLoading || props.loading}
+              loading={validationLoading || loading}
               onClick={resetHandler}
             >
               {t('reset')}
@@ -112,8 +112,8 @@ export default function MeForm(props: Props) {
           <Button
             variant="contained"
             type="submit"
-            disabled={props.isDisabled}
-            loading={validationLoading || props.loading}
+            disabled={isDisabled}
+            loading={validationLoading || loading}
             className="flex-1"
           >
             {t('update')}

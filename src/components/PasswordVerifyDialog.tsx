@@ -17,11 +17,11 @@ import { postApi } from '@/lib/utils';
 
 interface Props {
   open: boolean;
-  onClose: () => void;
-  onVerified: (status: boolean) => void;
+  onClose: (status: boolean) => void;
+  onComplete: (status: boolean) => void;
 }
 
-export default function PasswordVerifyDialog(props: Props) {
+export default function PasswordVerifyDialog({ open, onClose, onComplete }: Props) {
   const t = useTranslations();
 
   const [loading, setLoading] = useState(false);
@@ -33,7 +33,7 @@ export default function PasswordVerifyDialog(props: Props) {
       setErrors(undefined);
       setPassword('');
     };
-  }, [props.open]);
+  }, [open]);
 
   async function onSubmitHandler(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -60,7 +60,7 @@ export default function PasswordVerifyDialog(props: Props) {
       setErrors(result.messages?.password);
     }
 
-    props.onVerified(result.status);
+    onComplete(result.status);
     setLoading(false);
   }
 
@@ -69,11 +69,11 @@ export default function PasswordVerifyDialog(props: Props) {
       return;
     }
 
-    props.onClose();
+    onClose(false);
   }
 
   return (
-    <Dialog disableEnforceFocus open={props.open} onClose={(_e, r) => onCloseHandler(r)}>
+    <Dialog disableEnforceFocus open={open} onClose={(_e, r) => onCloseHandler(r)}>
       <DialogTitle>{t('verifyYourPassword.title')}</DialogTitle>
       <DialogContent>
         <DialogContentText className="!mb-2">{t('verifyYourPassword.content')}</DialogContentText>
