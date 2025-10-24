@@ -44,6 +44,7 @@ const schema = async () => {
     })
     .refine((data) => data.newPassword === data.newPasswordAgain, {
       message: t('validation.passwordRefine'),
+      path: ['newPasswordAgain'],
     });
 };
 

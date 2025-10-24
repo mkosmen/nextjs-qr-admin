@@ -1,6 +1,3 @@
-export const HOST = 'mongodb://127.0.0.1:27017/qrmenu';
-export const DB = 'admin';
-
 export const LINKS = {
   WEB: {
     LOGIN: 'login',
@@ -18,6 +15,7 @@ export const LINKS = {
       ME: 'api/user/me',
       PASSWORD: {
         VERIFY: 'api/user/password/verify',
+        RESET: 'api/user/password/reset',
       },
     },
   },
@@ -31,6 +29,7 @@ export const LINKS = {
       ME: 'user/me',
       PASSWORD: {
         VERIFY: 'user/password/verify',
+        RESET: 'user/password/reset',
       },
     },
   },

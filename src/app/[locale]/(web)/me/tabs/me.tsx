@@ -11,7 +11,7 @@ import { ToastContext } from '@/lib/providers/ToastProvider';
 
 interface Props {
   user: User;
-  verify: boolean;
+  verify?: boolean;
   onComplete: () => void;
   onSubmit: () => void;
 }
@@ -58,8 +58,8 @@ export default function MeTab({ user, verify, onComplete, onSubmit }: Props) {
           setFormErrors((prev) => ({ ...prev, ...result.messages }));
         }
       }
-    } catch (error: any) {
-      setError(error?.message || t('anErrorOccured'));
+    } catch {
+      setError(t('anErrorOccured'));
     } finally {
       setLoading(false);
       onComplete();

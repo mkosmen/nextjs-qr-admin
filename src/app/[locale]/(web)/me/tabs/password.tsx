@@ -7,7 +7,7 @@ import { ToastContext } from '@/lib/providers/ToastProvider';
 import { useTranslations } from 'next-intl';
 
 interface Props {
-  verify: boolean;
+  verify?: boolean;
   onComplete: () => void;
   onSubmit: () => void;
 }
@@ -37,21 +37,21 @@ export default function PasswordTab({ verify, onComplete, onSubmit }: Props) {
         status: boolean;
         message?: string;
         messages?: Record<string, string[]>;
-      }>(LINKS.API_ROUTE.USER.PASSWORD.VERIFY, {
+      }>(LINKS.API_ROUTE.USER.PASSWORD.RESET, {
         body: JSON.stringify(updateDto.current),
       });
 
       if (result.status) {
-        toast?.showToast(t('meUpdateSuccess'));
+        toast?.showToast(t('passwordUpdateSuccess'));
       } else {
-        setError(result?.message || t('meUpdateFailed'));
+        setError(result?.message || t('passwordUpdateFailed'));
 
         if ('messages' in result) {
           setErrors((prev) => ({ ...prev, ...result.messages }));
         }
       }
-    } catch (error: any) {
-      setError(error?.message || t('anErrorOccured'));
+    } catch {
+      setError(t('anErrorOccured'));
     } finally {
       setLoading(false);
       onComplete();

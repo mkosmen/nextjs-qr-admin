@@ -1,31 +1,32 @@
 'use client';
 
-import PasswordVerifyDialog from '@/components/PasswordVerifyDialog';
 import { useState, createContext } from 'react';
+import PasswordVerifyDialog from '@/components/PasswordVerifyDialog';
 
 export const CommonContext = createContext<{
-  setVerifyPasswordDialogStatus: (status: boolean) => any;
-  onCompleteHandler: (status: boolean) => void;
+  toggleVerifyPasswordDialog: (status: boolean) => any;
+  setIsComplete: (status: boolean) => any;
+  isComplete: boolean;
 } | null>(null);
 
 export default function CommonProvider({ children }: { children: React.ReactNode }) {
-  const [verifyPasswordDialogStatus, setVerifyPasswordDialogStatus] = useState<boolean>(false);
-
-  function onCompleteHandler() {}
+  const [verifyPasswordDialogStatus, toggleVerifyPasswordDialog] = useState<boolean>(false);
+  const [isComplete, setIsComplete] = useState(false);
 
   return (
     <CommonContext.Provider
       value={{
-        setVerifyPasswordDialogStatus,
-        onCompleteHandler,
+        toggleVerifyPasswordDialog,
+        setIsComplete,
+        isComplete,
       }}
     >
       {children}
 
       <PasswordVerifyDialog
         open={verifyPasswordDialogStatus}
-        onClose={setVerifyPasswordDialogStatus}
-        onComplete={onCompleteHandler}
+        onClose={toggleVerifyPasswordDialog}
+        onComplete={setIsComplete}
       />
     </CommonContext.Provider>
   );

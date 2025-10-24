@@ -35,5 +35,7 @@
   "reset": "Sıfırla",
   "meResetTooltip": "Kullanıcı bilgilerinizi eski haline getirin",
   "meUpdateSuccess": "Kullanıcı bilgileri güncellendi",
-  "meUpdateFailed": "Kullanıcı bilgileri güncellenemedi"
+  "meUpdateFailed": "Kullanıcı bilgileri güncellenemedi",
+  "passwordUpdateSuccess": "Şifre güncellenemedi",
+  "passwordUpdateFailed": "Şifre güncellenemedi"
 }

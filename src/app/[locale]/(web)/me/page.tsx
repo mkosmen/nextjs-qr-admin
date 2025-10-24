@@ -22,12 +22,12 @@ export default function MePage() {
   const store = useAppStore();
   const user = store.getState().user.user;
   const commonProvider = useContext(CommonContext);
+
   const [activeTabIndex, setActiveTabIndex] = useState(0);
-  const [verify, setVerify] = useState(false);
 
   function onDoneHandler() {
-    commonProvider?.setVerifyPasswordDialogStatus(false);
-    setVerify(false);
+    commonProvider?.toggleVerifyPasswordDialog(false);
+    commonProvider?.setIsComplete(false);
   }
 
   return (
@@ -35,15 +35,15 @@ export default function MePage() {
       <TabPanel value={0} className="!px-0">
         <MeTab
           user={user!}
-          onSubmit={() => commonProvider?.setVerifyPasswordDialogStatus(true)}
-          verify={activeTabIndex === 0 && verify}
+          onSubmit={() => commonProvider?.toggleVerifyPasswordDialog(true)}
+          verify={activeTabIndex === 0 && commonProvider?.isComplete}
           onComplete={onDoneHandler}
         />
       </TabPanel>
       <TabPanel value={1} className="!px-0">
         <PasswordTab
-          onSubmit={() => commonProvider?.setVerifyPasswordDialogStatus(true)}
-          verify={activeTabIndex === 1 && verify}
+          onSubmit={() => commonProvider?.toggleVerifyPasswordDialog(true)}
+          verify={activeTabIndex === 1 && commonProvider?.isComplete}
           onComplete={onDoneHandler}
         />
       </TabPanel>

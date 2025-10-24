@@ -62,7 +62,7 @@ export default function PasswordForm(props: Props) {
           label={t('newPassword')}
           value={newPassword}
           autoFocus
-          onFocus={() => setErrors((prev) => ({ ...prev, newPasswordAgain: undefined }))}
+          onFocus={() => setErrors((prev) => ({ ...prev, newPassword: undefined }))}
           onChange={(e) => setNewPassword(e.target.value)}
           fullWidth
           errors={errors?.newPassword}
@@ -73,7 +73,7 @@ export default function PasswordForm(props: Props) {
           id="newPasswordAgain"
           label={t('newPasswordAgain')}
           value={newPasswordAgain}
-          onFocus={() => setErrors((prev) => ({ ...prev, newPassword: undefined }))}
+          onFocus={() => setErrors((prev) => ({ ...prev, newPasswordAgain: undefined }))}
           onChange={(e) => setNewPasswordAgain(e.target.value)}
           fullWidth
           errors={errors?.newPasswordAgain}
