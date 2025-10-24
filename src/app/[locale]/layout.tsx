@@ -12,6 +12,7 @@ import { redirect } from '@/i18n/navigation';
 import { getLocale } from 'next-intl/server';
 
 import './globals.scss';
+import ToastProvider from '@/lib/providers/ToastProvider';
 
 type Props = {
   children: ReactElement;
@@ -38,7 +39,9 @@ export default async function RootLayout({ children }: Props) {
       <body className="h-full">
         <AppRouterCacheProvider>
           <NextIntlClientProvider messages={messages}>
-            <StoreProvider initialUser={user}>{children}</StoreProvider>
+            <StoreProvider initialUser={user}>
+              <ToastProvider>{children}</ToastProvider>
+            </StoreProvider>
           </NextIntlClientProvider>
         </AppRouterCacheProvider>
       </body>

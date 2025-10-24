@@ -26,3 +26,8 @@ export interface User {
 }
 
 export type MeUpdateDto = Partial<Omit<SignUpDto, 'email'>>;
+
+export interface PasswordUpdateDto {
+  newPassword: string;
+  newPasswordAgain: string;
+}
