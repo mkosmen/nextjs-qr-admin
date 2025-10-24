@@ -1,9 +1,11 @@
 export const LINKS = {
   WEB: {
-    LOGIN: 'login',
-    SIGNUP: 'signup',
-    DASHBOARD: 'dashboard',
-    PROFILE: 'me',
+    LOGIN: '/login',
+    SIGNUP: '/signup',
+    DASHBOARD: '/dashboard',
+    PROFILE: '/me',
+    CATEGORY: '/category',
+    PRODUCT: '/product',
   },
   API_ROUTE: {
     AUTH: {

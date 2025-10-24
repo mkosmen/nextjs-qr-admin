@@ -37,5 +37,8 @@
   "meUpdateSuccess": "Kullanıcı bilgileri güncellendi",
   "meUpdateFailed": "Kullanıcı bilgileri güncellenemedi",
   "passwordUpdateSuccess": "Şifre güncellenemedi",
-  "passwordUpdateFailed": "Şifre güncellenemedi"
+  "passwordUpdateFailed": "Şifre güncellenemedi",
+  "dashboard": "Ana Sayfa",
+  "categories": "Kategoriler",
+  "products": "Ürünler"
 }
