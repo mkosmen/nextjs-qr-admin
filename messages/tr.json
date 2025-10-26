@@ -1,4 +1,8 @@
 {
+  "metadata": {
+    "title": "qr",
+    "description": "Açıklama"
+  },
   "name": "Ad",
   "surname": "Soyad",
   "submit": "Gönder",
@@ -40,5 +44,16 @@
   "passwordUpdateFailed": "Şifre güncellenemedi",
   "dashboard": "Ana Sayfa",
   "categories": "Kategoriler",
-  "products": "Ürünler"
+  "products": "Ürünler",
+  "categoryName": "Kategori Adı",
+  "actions": "İşlemler",
+  "status": "Durum",
+  "active": "Aktif",
+  "passive": "Pasif",
+  "delete": "Sil",
+  "edit": "Düzenle",
+  "companies": "Firmalar",
+  "categoryStatusUpdateSuccess": "Kategori durumu değiştirildi",
+  "categoryStatusUpdateFailed": "Kategori durumu değiştirilemedi",
+  "refresh": "Yenile"
 }

@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { Fragment, ReactNode, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import classnames from 'classnames';
 import { Link, usePathname } from '@/i18n/navigation';
@@ -7,7 +7,7 @@ import { LINKS } from '@/lib/constant';
 import {
   Home,
   Category,
-  CardTravel,
+  Store,
   KeyboardDoubleArrowLeft,
   KeyboardDoubleArrowRight,
 } from '@mui/icons-material';
@@ -21,8 +21,8 @@ interface NavItem {
   divider?: boolean;
   mini?: boolean;
 }
-interface NavItemProps extends NavItem {
-  key: string;
+interface Nav extends NavItem {
+  id: string;
   mini?: boolean;
   open?: boolean;
   children?: NavItem[];
@@ -40,10 +40,10 @@ function NavItemContent({ icon, primary, mini }: NavItem) {
       <ListItemText
         primary={primary}
         className={classnames(
-          'nav-item-content-text !m-0 flex-1 !text-xs !text-nowrap [&_span]:!leading-[1.7]',
+          'nav-item-content-text !m-0 flex-1 !text-nowrap [&_span]:!leading-[2]',
           {
             '[&_span]:!text-[10px]': mini,
-            '!h-6': !mini,
+            '!h-6 [&_span]:!text-[14px]': !mini,
           },
         )}
       />
@@ -74,24 +74,24 @@ function NavItem(props: NavItem) {
   );
 }
 
-function Nav(props: NavItemProps) {
-  const { open, children, ...others } = props;
+function Nav(props: Nav) {
+  const { open, children, id, ...others } = props;
 
   return (
     <>
       {children?.length ? (
         <>
-          <NavItem {...others} />
+          <NavItem key={id + '_0'} {...others} />
           <Collapse in={open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
               {children?.map((m, i) => {
-                return <NavItem {...m} key={i} />;
+                return <NavItem {...m} key={id + '_' + (i + 1)} />;
               })}
             </List>
           </Collapse>
         </>
       ) : (
-        <NavItem {...others} />
+        <NavItem key={id + '_0'} {...others} />
       )}
     </>
   );
@@ -100,27 +100,33 @@ function Nav(props: NavItemProps) {
 export default function XSideBar() {
   const t = useTranslations();
   const pathName = usePathname();
-  const [mini, setMini] = useState(false);
+  const [mini, setMini] = useState(true);
 
-  const items: NavItemProps[] = [
+  const items: Nav[] = [
     {
-      key: 'dashboard',
+      id: 'dashboard',
       primary: t('dashboard'),
       href: LINKS.WEB.DASHBOARD,
       icon: <Home />,
       divider: true,
     },
     {
-      key: 'categories',
+      id: 'company',
+      primary: t('companies'),
+      href: LINKS.WEB.COMPANY,
+      icon: <Store />,
+    },
+    {
+      id: 'categories',
       primary: t('categories'),
       href: LINKS.WEB.CATEGORY,
       icon: <Category />,
     },
     {
-      key: 'products',
+      id: 'products',
       primary: t('products'),
       href: LINKS.WEB.PRODUCT,
-      icon: <CardTravel />,
+      icon: <Store />,
     },
   ];
 
@@ -128,18 +134,17 @@ export default function XSideBar() {
     <div
       className={classnames('flex h-full flex-col bg-(--bg-color-dark)', {
         mini,
-        'w-68': !mini,
-        'w-16': mini,
+        'w-68 min-w-68': !mini,
+        'w-16 min-w-16': mini,
       })}
     >
       <List sx={{ width: '100%' }} component="nav" className="flex-1 !py-0">
         {items.map((m) => {
-          const { key, ...props } = m;
           return (
-            <>
-              <Nav {...props} active={pathName === props.href} key={key} mini={mini} />
+            <Fragment key={m.id}>
+              <Nav {...m} active={pathName === `/${m.href}`} mini={mini} />
               {m.divider && <Divider className="!border-gray-600" />}
-            </>
+            </Fragment>
           );
         })}
       </List>

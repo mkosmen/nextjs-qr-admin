@@ -7,16 +7,12 @@ import { LINKS, STATIC_KEYS } from '@/lib/constant';
 export async function POST(req: NextRequest) {
   const cookieStorage = await cookies();
 
-  try {
-    const data = await req.json();
-    const result = await postRequest<SigInResponse>(LINKS.REST_API.AUTH.LOGIN, { data });
+  cookieStorage.delete(STATIC_KEYS.TOKEN);
 
-    cookieStorage.set(STATIC_KEYS.TOKEN, result.token!);
+  const data = await req.json();
+  const result = await postRequest<SigInResponse>(LINKS.REST_API.AUTH.LOGIN, { data });
 
-    return Response.json({ status: true });
-  } catch (error: any) {
-    cookieStorage.delete(STATIC_KEYS.TOKEN);
+  cookieStorage.set(STATIC_KEYS.TOKEN, result.token!);
 
-    return Response.json({ status: false, ...error });
-  }
+  return Response.json({ status: true });
 }

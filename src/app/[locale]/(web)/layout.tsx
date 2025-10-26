@@ -20,7 +20,7 @@ export default function RootLayout({ children }: Props) {
         <div className="flex h-full w-full flex-1 flex-col">
           <XHeader />
           <div className="flex flex-1 flex-col overflow-y-auto">
-            <main className="flex-1 overflow-hidden p-2">{children}</main>
+            <main className="flex-1 overflow-hidden bg-gray-100 p-2">{children}</main>
             <XFooter />
           </div>
         </div>

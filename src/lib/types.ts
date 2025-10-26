@@ -31,3 +31,37 @@ export interface PasswordUpdateDto {
   newPassword: string;
   newPasswordAgain: string;
 }
+
+export interface Category {
+  _id?: string;
+  name: string;
+  userId: string;
+  active?: boolean;
+  slug?: string;
+}
+
+export interface CategoryOptions {
+  _id: string;
+  statusLoading: boolean;
+}
+
+export interface PaginationModel {
+  page: number;
+  pageSize: number;
+}
+
+export interface PaginationLimitModel {
+  maxPage: number;
+  total: number;
+}
+
+export type Pagination = PaginationModel & PaginationLimitModel;
+
+export type PaginationResult<T extends object> = T & {
+  pagination: {
+    page: number;
+    limit: number;
+    maxPage: number;
+    total: number;
+  };
+};

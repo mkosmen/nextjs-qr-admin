@@ -3,11 +3,9 @@ import { getRequest } from '@/lib/request';
 import { LINKS, STATIC_KEYS } from '@/lib/constant';
 
 export async function GET() {
-  try {
-    await getRequest<boolean>(LINKS.REST_API.AUTH.LOGOUT);
-  } finally {
-    const cookieStorage = await cookies();
-    cookieStorage.delete(STATIC_KEYS.TOKEN);
-    return Response.json(true);
-  }
+  const cookieStorage = await cookies();
+  cookieStorage.delete(STATIC_KEYS.TOKEN);
+
+  await getRequest<boolean>(LINKS.REST_API.AUTH.LOGOUT);
+  return Response.json({ status: true });
 }

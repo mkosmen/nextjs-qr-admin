@@ -17,7 +17,8 @@ const i18nMiddleware = (req: NextRequest) => {
 async function authMiddleware(req: NextRequest, response: NextResponse) {
   const path = req.nextUrl.pathname;
   const isPublicRoute = publicRoutes.some((p) => path.endsWith(p));
-  const token = (await cookies()).get(STATIC_KEYS.TOKEN)?.value;
+  const cookieStore = await cookies();
+  const token = cookieStore.get(STATIC_KEYS.TOKEN)?.value;
   const locale = await getLocale();
 
   if (!token && !isPublicRoute) {
@@ -41,11 +42,6 @@ export default async function middleware(request: NextRequest) {
   return await authMiddleware(request, response);
 }
 
-// export const config = {
-//   matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
-// };
-
 export const config = {
-  // Match only internationalized pathnames
   matcher: '/((?!api|trpc|_next|_vercel|.*\\..*).*)',
 };
