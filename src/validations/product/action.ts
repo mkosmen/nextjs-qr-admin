@@ -24,6 +24,12 @@ const schema = async () => {
           max: 31,
         }),
       }),
+    categoryId: z
+      .string()
+      .trim()
+      .nonempty({
+        message: t('validation.required'),
+      }),
   });
 };
 

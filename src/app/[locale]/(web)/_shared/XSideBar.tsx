@@ -10,6 +10,7 @@ import {
   Store,
   KeyboardDoubleArrowLeft,
   KeyboardDoubleArrowRight,
+  Inventory,
 } from '@mui/icons-material';
 import { Collapse, Divider, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 
@@ -126,7 +127,7 @@ export default function XSideBar() {
       id: 'products',
       primary: t('products'),
       href: LINKS.WEB.PRODUCT,
-      icon: <Store />,
+      icon: <Inventory />,
     },
   ];
 

@@ -65,20 +65,13 @@ export default function ProductPage() {
     {
       field: 'categoryId',
       flex: 1,
-      headerName: t('categoryName'),
+      headerName: t('category.name'),
       filterable: false,
       sortable: false,
       hideable: false,
       renderCell(params: GridRenderCellParams<any, string>) {
         const category = categories.find((f) => f._id === params.value);
-        return (
-          <Chip
-            label={category?.name || '-'}
-            variant="outlined"
-            color={category?.active ? 'success' : 'error'}
-            size="small"
-          />
-        );
+        return <Chip label={category?.name || '-'} size="small" />;
       },
     },
     {
@@ -166,9 +159,9 @@ export default function ProductPage() {
       });
 
       updateProductState(newProductState);
-      toast?.showToast(t('productStatusUpdateSuccess'));
+      toast?.showToast(t('product.statusUpdateSuccess'));
     } catch {
-      toast?.showToast(t('productStatusUpdateFailed'));
+      toast?.showToast(t('product.statusUpdateFailed'));
     } finally {
       updateProductOptionState({
         _id: row._id!,
@@ -275,11 +268,11 @@ export default function ProductPage() {
       setActionDialogKey((p) => p + 1);
       setIsActionDialogOpen(false);
       toast?.showToast(
-        actionType === 'create' ? t('productCreateSuccess') : t('productUpdateSuccess'),
+        actionType === 'create' ? t('product.createSuccess') : t('product.updateSuccess'),
       );
     } catch {
       toast?.showToast(
-        actionType === 'create' ? t('productCreateFailed') : t('productUpdateFailed'),
+        actionType === 'create' ? t('product.createFailed') : t('product.updateFailed'),
       );
     } finally {
       setActionLoading(false);
@@ -303,9 +296,9 @@ export default function ProductPage() {
       setSelectedProduct(null);
       setIsDeleteDialogOpen(false);
       setDeleteDialogKey((p) => p + 1);
-      toast?.showToast(t('productDeleteSuccess'));
+      toast?.showToast(t('product.deleteSuccess'));
     } catch {
-      toast?.showToast(t('productDeleteFailed'));
+      toast?.showToast(t('product.deleteFailed'));
     } finally {
       setDeleteLoading(false);
     }
@@ -316,13 +309,14 @@ export default function ProductPage() {
     setSelectedProduct(null);
   }
 
-  function updateSingleProduct(id: string, product: any) {
+  function updateSingleProduct(id: string, product: Product) {
     setProducts((prev) => {
-      const newCategories = prev.map((m) => {
+      const newProducts = prev.map((m) => {
         if (id === m._id) {
           return {
             ...m,
             name: product.name,
+            categoryId: product.categoryId,
             active: product.active,
           };
         }
@@ -330,7 +324,7 @@ export default function ProductPage() {
         return m;
       });
 
-      return newCategories;
+      return newProducts;
     });
   }
 
@@ -389,6 +383,7 @@ export default function ProductPage() {
         onClose={onCloseActionDialog}
         onSubmit={onActionSubmit}
         product={selectedProduct}
+        categories={categories}
       />
 
       <DeleteDialog

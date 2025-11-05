@@ -91,7 +91,7 @@ export default function ActionDialog({
         >
           <MhcInput
             id="name"
-            label={t('categoryName')}
+            label={t('category.name')}
             value={formItems.name}
             autoFocus
             onFocus={() => setErrors((prev) => ({ ...prev, name: undefined }))}

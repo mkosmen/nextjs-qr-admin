@@ -48,7 +48,7 @@ export default function CategoryPage() {
     {
       field: 'name',
       flex: 1,
-      headerName: t('categoryName'),
+      headerName: t('category.name'),
       filterable: false,
       sortable: false,
       hideable: false,
@@ -138,9 +138,9 @@ export default function CategoryPage() {
       });
 
       updateCategoryState(newCategoryState);
-      toast?.showToast(t('categoryStatusUpdateSuccess'));
+      toast?.showToast(t('category.statusUpdateSuccess'));
     } catch {
-      toast?.showToast(t('categoryStatusUpdateFailed'));
+      toast?.showToast(t('category.statusUpdateFailed'));
     } finally {
       updateCategoryOptionState({
         _id: row._id!,
@@ -247,11 +247,11 @@ export default function CategoryPage() {
       setActionDialogKey((p) => p + 1);
       setIsActionDialogOpen(false);
       toast?.showToast(
-        actionType === 'create' ? t('categoryCreateSuccess') : t('categoryUpdateSuccess'),
+        actionType === 'create' ? t('category.createSuccess') : t('category.updateSuccess'),
       );
     } catch {
       toast?.showToast(
-        actionType === 'create' ? t('categoryCreateFailed') : t('categoryUpdateFailed'),
+        actionType === 'create' ? t('category.createFailed') : t('category.updateFailed'),
       );
     } finally {
       setActionLoading(false);
@@ -275,9 +275,9 @@ export default function CategoryPage() {
       setSelectedCategory(null);
       setIsDeleteDialogOpen(false);
       setDeleteDialogKey((p) => p + 1);
-      toast?.showToast(t('categoryDeleteSuccess'));
+      toast?.showToast(t('category.deleteSuccess'));
     } catch {
-      toast?.showToast(t('categoryDeleteFailed'));
+      toast?.showToast(t('category.deleteFailed'));
     } finally {
       setDeleteLoading(false);
     }

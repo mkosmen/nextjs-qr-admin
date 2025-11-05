@@ -29,7 +29,7 @@ export default async function RootLayout({ children }: Props) {
   const messages = await getMessages();
 
   return (
-    <html className="h-full overflow-hidden" lang={locale}>
+    <html className="hydrated h-full overflow-hidden" lang={locale}>
       <body className="h-full overflow-hidden">
         <AppRouterCacheProvider>
           <NextIntlClientProvider messages={messages}>

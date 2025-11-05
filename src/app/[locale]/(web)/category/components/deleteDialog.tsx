@@ -33,12 +33,12 @@ export default function DeleteDialog({ open, category, loading, onClose, onSubmi
       aria-describedby="alert-dialog-description"
       maxWidth="xs"
     >
-      <DialogTitle id="alert-dialog-title">{t('categoryDeleteDialogTitle')}</DialogTitle>
+      <DialogTitle id="alert-dialog-title">{t('category.deleteDialogTitle')}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
           <span
             dangerouslySetInnerHTML={{
-              __html: t.markup('categoryDeleteDialogContent', {
+              __html: t.markup('category.deleteDialogContent', {
                 important: () => `<b>${category?.name}</b>`,
               }),
             }}

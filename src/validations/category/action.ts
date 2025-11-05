@@ -12,14 +12,14 @@ const schema = async () => {
       .string()
       .min(3, {
         message: t('validation.between', {
-          field: t('categoryName'),
+          field: t('category.name'),
           min: 3,
           max: 31,
         }),
       })
       .max(31, {
         message: t('validation.between', {
-          field: t('categoryName'),
+          field: t('category.name'),
           min: 3,
           max: 31,
         }),

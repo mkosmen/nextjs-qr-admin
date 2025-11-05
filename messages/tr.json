@@ -22,7 +22,8 @@
   "validation": {
     "email": "Lütfen geçerli bir E-Posta adresi girin",
     "between": "{field} en az {min} en fazla {max} karakterden oluşablilir",
-    "passwordRefine": "Şifreler eşleşmiyor"
+    "passwordRefine": "Şifreler eşleşmiyor",
+    "required": "Bu alan zorunludur"
   },
   "NotFoundPage": {
     "title": "Sayfa bulunamadı",
@@ -55,16 +56,19 @@
   "edit": "Düzenle",
   "refresh": "Yenile",
   "companies": "Firmalar",
-  "categoryStatusUpdateSuccess": "Kategori durumu değiştirildi",
-  "categoryStatusUpdateFailed": "Kategori durumu değiştirilemedi",
-  "categoryDeleteDialogTitle": "Kategori Sil",
-  "categoryDeleteDialogContent": "<important>name</important> adlı kategoriyi silmek istiyor musunuz?\nBu işlem geri alınamaz",
-  "categoryCreateSuccess": "Kategori eklendi",
-  "categoryCreateFailed": "Kategori eklenemedi",
-  "categoryUpdateSuccess": "Kategori güncellendi",
-  "categoryUpdateFailed": "Kategori güncellenemedi",
-  "categoryDeleteSuccess": "Kategori silindi",
-  "categoryDeleteFailed": "Kategori silinemedi",
+  "category": {
+    "name": "Kategori Adı",
+    "statusUpdateSuccess": "Kategori durumu değiştirildi",
+    "statusUpdateFailed": "Kategori durumu değiştirilemedi",
+    "deleteDialogTitle": "Kategori Sil",
+    "deleteDialogContent": "<important>name</important> adlı kategoriyi silmek istiyor musunuz?\nBu işlem geri alınamaz",
+    "createSuccess": "Kategori eklendi",
+    "createFailed": "Kategori eklenemedi",
+    "updateSuccess": "Kategori güncellendi",
+    "updateFailed": "Kategori güncellenemedi",
+    "deleteSuccess": "Kategori silindi",
+    "deleteFailed": "Kategori silinemedi"
+  },
   "product": {
     "name": "Ürün Adı",
     "statusUpdateSuccess": "Ürün durumu değiştirildi",
