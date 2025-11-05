@@ -6,6 +6,7 @@
   "name": "Ad",
   "surname": "Soyad",
   "submit": "Gönder",
+  "add": "Ekle",
   "update": "Güncelle",
   "email": "E-Posta",
   "password": "Şifre",
@@ -55,5 +56,13 @@
   "companies": "Firmalar",
   "categoryStatusUpdateSuccess": "Kategori durumu değiştirildi",
   "categoryStatusUpdateFailed": "Kategori durumu değiştirilemedi",
-  "refresh": "Yenile"
+  "refresh": "Yenile",
+  "categoryDeleteDialogTitle": "Kategori Sil",
+  "categoryDeleteDialogContent": "<important>name</important> adlı kategoriyi silmek istiyor musunuz?\nBu işlem geri alınamaz",
+  "categoryCreateSuccess": "Kategori eklendi",
+  "categoryCreateFailed": "Kategori eklenemedi",
+  "categoryUpdateSuccess": "Kategori güncellendi",
+  "categoryUpdateFailed": "Kategori güncellenemedi",
+  "categoryDeleteSuccess": "Kategori silindi",
+  "categoryDeleteFailed": "Kategori silinemedi"
 }

@@ -8,6 +8,7 @@ interface TDefault {
 
 interface Config {
   params?: any;
+  searchParams?: any;
   replace?: Record<string, any>;
   body?: any;
 }
@@ -23,12 +24,18 @@ const DEFAULT_FETCH_OPTIONS = {
 
 export const fetchApi = async <T>(url: string, options: ConfigWithMethod) => {
   let newUrl = url;
-  const { replace = {}, ...fetchOptions } = options;
+  const { replace = {}, params = {}, ...fetchOptions } = options;
 
   Object.entries(replace as object).forEach(([key, value]) => {
     newUrl = url.replaceAll(`[${key}]`, value);
   });
+  if (Object.keys(params).length > 0) {
+    newUrl += '?' + new URLSearchParams(params);
+  }
+
   const o = { ...DEFAULT_FETCH_OPTIONS, ...fetchOptions };
+  console.log('fetchApi', { newUrl, o });
+
   const r = await fetch(newUrl, o);
   const result = <T>await r.json();
   return result;

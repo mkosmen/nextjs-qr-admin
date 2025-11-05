@@ -8,3 +8,8 @@
   --bg-color-dark: #1e2227;
   --bg-color-light: #eeeeee;
 }
+
+.MuiDataGrid-cell,
+.MuiDataGrid-columnHeader {
+  outline: none !important;
+}

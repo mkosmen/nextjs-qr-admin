@@ -65,3 +65,7 @@ export type PaginationResult<T extends object> = T & {
     total: number;
   };
 };
+
+export type CategoryActionDto = Partial<Pick<Category, 'name' | 'active'>>;
+
+export type DialogCloseReason = 'backdropClick' | 'escapeKeyDown';

@@ -1,3 +1,5 @@
+'use server';
+
 import axios from 'axios';
 import { cookies } from 'next/headers';
 import { STATIC_KEYS } from '../constant';
@@ -28,7 +30,7 @@ instance.interceptors.response.use(
   function (response) {
     return response;
   },
-  function (error) {
+  async function (error) {
     if (error.code === 'ECONNREFUSED') {
       return Promise.reject(error);
     }

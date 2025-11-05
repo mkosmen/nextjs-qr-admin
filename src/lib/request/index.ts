@@ -11,8 +11,6 @@ export const request = async <T>(
     axiosOptions.url = (axiosOptions.url || '').replaceAll(`[${key}]`, value);
   });
 
-  console.log('axiosOptions', axiosOptions);
-
   const result = await reqInstance.request<T>({
     ...axiosOptions,
   });

@@ -4,29 +4,28 @@ import { useState, useEffect, useContext, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import {
   Category,
+  CategoryActionDto,
   CategoryOptions,
   PaginationLimitModel,
   PaginationModel,
   PaginationResult,
 } from '@/lib/types';
-import { patchApi, postApi } from '@/lib/utils';
+import { deleteApi, getApi, patchApi, postApi, putApi } from '@/lib/utils';
 import {
   DEFAULT_PAGINATION_LIMITATION,
   DEFAULT_PAGINATION_MODEL,
   LINKS,
+  MODAL_ACTION_TYPE,
   PAGE_SIZE_OPTIONS,
 } from '@/lib/constant';
 import { ToastContext } from '@/lib/providers/ToastProvider';
 // ---
-import { Box, Button, Switch } from '@mui/material';
-import {
-  DataGrid,
-  GridActionsCellItem,
-  GridColDef,
-  GridRenderCellParams,
-  GridRowId,
-} from '@mui/x-data-grid';
-import { Delete, Edit, Refresh } from '@mui/icons-material';
+import { Box, Switch } from '@mui/material';
+import { DataGrid, GridActionsCellItem, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import { Delete, Edit } from '@mui/icons-material';
+import Actions from './components/actions';
+import ActionDialog from './components/actionDialog';
+import DeleteDialog from './components/deleteDialog';
 
 export default function CategoryPage() {
   const t = useTranslations();
@@ -36,6 +35,14 @@ export default function CategoryPage() {
   const [pagination, setPagination] = useState<PaginationModel>(DEFAULT_PAGINATION_MODEL);
   const [limitation, setLimitation] = useState<PaginationLimitModel>(DEFAULT_PAGINATION_LIMITATION);
   const [categoryOptions, setCategoryOptions] = useState<CategoryOptions[]>();
+  const [isActionDialogOpen, setIsActionDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [actionType, setActionType] = useState<MODAL_ACTION_TYPE>('create');
+  const [actionLoading, setActionLoading] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [actionDialogKey, setActionDialogKey] = useState(1);
+  const [deleteDialogKey, setDeleteDialogKey] = useState(1);
 
   const columns: GridColDef<(typeof categories)[number]>[] = [
     {
@@ -75,7 +82,7 @@ export default function CategoryPage() {
       sortable: false,
       hideable: false,
       headerAlign: 'right',
-      getActions({ id }) {
+      getActions({ row }: any) {
         return [
           <GridActionsCellItem
             icon={<Edit />}
@@ -83,7 +90,7 @@ export default function CategoryPage() {
             title={t('edit')}
             key="edit"
             className="textPrimary"
-            onClick={() => handleEditClick(id)}
+            onClick={() => handleEditClick(row)}
             color="primary"
           />,
           <GridActionsCellItem
@@ -92,7 +99,7 @@ export default function CategoryPage() {
             title={t('delete')}
             label={t('delete')}
             key="delete"
-            onClick={() => handleDeleteClick(id)}
+            onClick={() => handleDeleteClick(row)}
             color="inherit"
           />,
         ];
@@ -100,12 +107,15 @@ export default function CategoryPage() {
     },
   ];
 
-  function handleEditClick(id: GridRowId) {
-    console.log('handleEditClick', id);
+  function handleEditClick(row: Category) {
+    setSelectedCategory(row);
+    setActionType('update');
+    setIsActionDialogOpen(true);
   }
 
-  function handleDeleteClick(id: GridRowId) {
-    console.log('handleDeleteClick', id);
+  function handleDeleteClick(row: Category) {
+    setSelectedCategory(row);
+    setIsDeleteDialogOpen(true);
   }
 
   async function handleChange(checked: boolean, row: Category) {
@@ -192,15 +202,13 @@ export default function CategoryPage() {
     setLoading(true);
 
     try {
-      const result = await postApi<PaginationResult<{ categories: Category[] }>>(
+      const result = await getApi<PaginationResult<{ categories: Category[] }>>(
         LINKS.API_ROUTE.CATEGORY._DEFAULT,
         {
-          body: JSON.stringify({
-            params: {
-              page: pagination.page + 1,
-              limit: pagination.pageSize,
-            },
-          }),
+          params: {
+            page: pagination.page + 1,
+            limit: pagination.pageSize,
+          },
         },
       );
 
@@ -219,6 +227,84 @@ export default function CategoryPage() {
       setLoading(false);
     }
   }, [pagination.page, pagination.pageSize]);
+
+  async function onActionSubmit(dto: CategoryActionDto) {
+    setActionLoading(true);
+
+    try {
+      if (actionType === 'create') {
+        await postApi(LINKS.API_ROUTE.CATEGORY._DEFAULT, { body: JSON.stringify(dto) });
+        getCategories();
+      } else {
+        await putApi(LINKS.API_ROUTE.CATEGORY.SINGLE, {
+          replace: {
+            _id: selectedCategory?._id,
+          },
+          body: JSON.stringify(dto),
+        });
+        updateSingleCategory(selectedCategory!._id!, dto);
+      }
+      setActionDialogKey((p) => p + 1);
+      setIsActionDialogOpen(false);
+      toast?.showToast(
+        actionType === 'create' ? t('categoryCreateSuccess') : t('categoryUpdateSuccess'),
+      );
+    } catch {
+      toast?.showToast(
+        actionType === 'create' ? t('categoryCreateFailed') : t('categoryUpdateFailed'),
+      );
+    } finally {
+      setActionLoading(false);
+    }
+  }
+
+  function onCloseActionDialog() {
+    setActionType('create');
+    setIsActionDialogOpen(false);
+    setSelectedCategory(null);
+  }
+
+  async function onDeleteSubmit() {
+    setDeleteLoading(true);
+
+    try {
+      await deleteApi(LINKS.API_ROUTE.CATEGORY.SINGLE, {
+        replace: { _id: selectedCategory?._id },
+      });
+      getCategories();
+      setSelectedCategory(null);
+      setIsDeleteDialogOpen(false);
+      setDeleteDialogKey((p) => p + 1);
+      toast?.showToast(t('categoryDeleteSuccess'));
+    } catch {
+      toast?.showToast(t('categoryDeleteFailed'));
+    } finally {
+      setDeleteLoading(false);
+    }
+  }
+
+  function onCloseDeleteDialog() {
+    setIsDeleteDialogOpen(false);
+    setSelectedCategory(null);
+  }
+
+  function updateSingleCategory(id: string, category: any) {
+    setCategories((prev) => {
+      const newCategories = prev.map((m) => {
+        if (id === m._id) {
+          return {
+            ...m,
+            name: category.name,
+            active: category.active,
+          };
+        }
+
+        return m;
+      });
+
+      return newCategories;
+    });
+  }
   // ---
 
   useEffect(() => {
@@ -226,33 +312,52 @@ export default function CategoryPage() {
   }, [getCategories]);
 
   return (
-    <Box className="w-full">
-      <div className="mb-2 flex justify-end p-1">
-        <Button
-          component="label"
-          role={undefined}
-          variant="contained"
-          tabIndex={-1}
-          startIcon={<Refresh />}
-          loading={loading}
-          onClick={getCategories}
-        >
-          {t('refresh')}
-        </Button>
-      </div>
-      <DataGrid
-        getRowId={(row) => row._id!}
-        rows={categories}
-        columns={columns}
-        disableColumnMenu
-        disableColumnSelector
-        disableRowSelectionOnClick
-        paginationModel={pagination}
-        onPaginationModelChange={setPagination}
-        rowCount={limitation.total}
-        pageSizeOptions={PAGE_SIZE_OPTIONS}
-        paginationMode="server"
+    <>
+      <Box className="w-full">
+        <div className="mb-2 flex p-1">
+          <Actions
+            loading={loading}
+            refresh={getCategories}
+            openActionDialog={() => setIsActionDialogOpen(true)}
+          />
+        </div>
+        <DataGrid
+          style={{ height: '423px' }}
+          getRowId={(row) => row._id!}
+          rows={categories}
+          columns={columns}
+          disableColumnResize
+          disableColumnMenu
+          disableColumnSelector
+          disableRowSelectionOnClick
+          rowSelection={false}
+          paginationModel={pagination}
+          onPaginationModelChange={setPagination}
+          rowCount={limitation.total}
+          pageSizeOptions={PAGE_SIZE_OPTIONS}
+          paginationMode="server"
+        />
+      </Box>
+
+      <ActionDialog
+        key={`a_${actionDialogKey}`}
+        loading={actionLoading}
+        setLoading={setActionLoading}
+        open={isActionDialogOpen}
+        type={actionType}
+        onClose={onCloseActionDialog}
+        onSubmit={onActionSubmit}
+        category={selectedCategory}
       />
-    </Box>
+
+      <DeleteDialog
+        key={`d_${deleteDialogKey}`}
+        loading={deleteLoading}
+        open={isDeleteDialogOpen}
+        onClose={onCloseDeleteDialog}
+        onSubmit={onDeleteSubmit}
+        category={selectedCategory}
+      />
+    </>
   );
 }
