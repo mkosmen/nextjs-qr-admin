@@ -26,8 +26,14 @@ export const LINKS = {
     },
     CATEGORY: {
       _DEFAULT: 'api/category',
+      ALL: 'api/category/all',
       SINGLE: 'api/category/[_id]',
       STATUS: 'api/category/[_id]/status',
+    },
+    PRODUCT: {
+      _DEFAULT: 'api/product',
+      SINGLE: 'api/product/[_id]',
+      STATUS: 'api/product/[_id]/status',
     },
   },
   REST_API: {
@@ -45,8 +51,14 @@ export const LINKS = {
     },
     CATEGORY: {
       _DEFAULT: 'category',
+      ALL: 'category/all',
       SINGLE: 'category/[_id]',
       STATUS: 'category/[_id]/status',
+    },
+    PRODUCT: {
+      _DEFAULT: 'product',
+      SINGLE: 'product/[_id]',
+      STATUS: 'product/[_id]/status',
     },
   },
 };

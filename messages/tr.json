@@ -53,10 +53,10 @@
   "passive": "Pasif",
   "delete": "Sil",
   "edit": "Düzenle",
+  "refresh": "Yenile",
   "companies": "Firmalar",
   "categoryStatusUpdateSuccess": "Kategori durumu değiştirildi",
   "categoryStatusUpdateFailed": "Kategori durumu değiştirilemedi",
-  "refresh": "Yenile",
   "categoryDeleteDialogTitle": "Kategori Sil",
   "categoryDeleteDialogContent": "<important>name</important> adlı kategoriyi silmek istiyor musunuz?\nBu işlem geri alınamaz",
   "categoryCreateSuccess": "Kategori eklendi",
@@ -64,5 +64,18 @@
   "categoryUpdateSuccess": "Kategori güncellendi",
   "categoryUpdateFailed": "Kategori güncellenemedi",
   "categoryDeleteSuccess": "Kategori silindi",
-  "categoryDeleteFailed": "Kategori silinemedi"
+  "categoryDeleteFailed": "Kategori silinemedi",
+  "product": {
+    "name": "Ürün Adı",
+    "statusUpdateSuccess": "Ürün durumu değiştirildi",
+    "statusUpdateFailed": "Ürün durumu değiştirilemedi",
+    "deleteDialogTitle": "Ürün Sil",
+    "deleteDialogContent": "<important>name</important> adlı ürünü silmek istiyor musunuz?\nBu işlem geri alınamaz",
+    "createSuccess": "Ürün eklendi",
+    "createFailed": "Ürün eklenemedi",
+    "updateSuccess": "Ürün güncellendi",
+    "updateFailed": "Ürün güncellenemedi",
+    "deleteSuccess": "Ürün silindi",
+    "deleteFailed": "Ürün silinemedi"
+  }
 }

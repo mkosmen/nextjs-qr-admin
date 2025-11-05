@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import {
   Category,
   CategoryActionDto,
-  CategoryOptions,
+  DefaultOptions,
   PaginationLimitModel,
   PaginationModel,
   PaginationResult,
@@ -34,7 +34,7 @@ export default function CategoryPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [pagination, setPagination] = useState<PaginationModel>(DEFAULT_PAGINATION_MODEL);
   const [limitation, setLimitation] = useState<PaginationLimitModel>(DEFAULT_PAGINATION_LIMITATION);
-  const [categoryOptions, setCategoryOptions] = useState<CategoryOptions[]>();
+  const [categoryOptions, setCategoryOptions] = useState<DefaultOptions[]>();
   const [isActionDialogOpen, setIsActionDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [actionType, setActionType] = useState<MODAL_ACTION_TYPE>('create');
@@ -154,12 +154,12 @@ export default function CategoryPage() {
       return {
         _id: m._id,
         statusLoading: false,
-      } as CategoryOptions;
+      } as DefaultOptions;
     });
     setCategoryOptions(categoryOptions);
   }
 
-  function updateCategoryOptionState(options: CategoryOptions) {
+  function updateCategoryOptionState(options: DefaultOptions) {
     const categoryOption = categoryOptions?.find((f) => f._id === options._id);
     if (!categoryOption) {
       return;

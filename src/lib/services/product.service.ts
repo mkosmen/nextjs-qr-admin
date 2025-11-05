@@ -3,11 +3,11 @@ import { LINKS } from '@/lib/constant';
 import { deleteRequest, getRequest, patchRequest, postRequest, putRequest } from '@/lib/request';
 
 export async function getList(config?: any) {
-  return await getRequest<Category[]>(LINKS.REST_API.CATEGORY._DEFAULT, config);
+  return await getRequest<Category[]>(LINKS.REST_API.PRODUCT._DEFAULT, config);
 }
 
 export async function updateActive({ _id, active }: { _id: string; active: boolean }) {
-  return await patchRequest<{ status: boolean }>(LINKS.REST_API.CATEGORY.STATUS, {
+  return await patchRequest<{ status: boolean }>(LINKS.REST_API.PRODUCT.STATUS, {
     active,
     replace: {
       _id,
@@ -16,11 +16,11 @@ export async function updateActive({ _id, active }: { _id: string; active: boole
 }
 
 export async function create(data: CategoryActionDto) {
-  return await postRequest(LINKS.REST_API.CATEGORY._DEFAULT, { data });
+  return await postRequest(LINKS.REST_API.PRODUCT._DEFAULT, { data });
 }
 
 export async function remove(_id: string) {
-  return await deleteRequest(LINKS.REST_API.CATEGORY.SINGLE, {
+  return await deleteRequest(LINKS.REST_API.PRODUCT.SINGLE, {
     replace: {
       _id,
     },
@@ -28,14 +28,10 @@ export async function remove(_id: string) {
 }
 
 export async function update(_id: string, data: CategoryActionDto) {
-  return await putRequest(LINKS.REST_API.CATEGORY.SINGLE, {
+  return await putRequest(LINKS.REST_API.PRODUCT.SINGLE, {
     replace: {
       _id,
     },
     data,
   });
-}
-
-export async function getAll() {
-  return await getRequest<Category[]>(LINKS.REST_API.CATEGORY.ALL);
 }

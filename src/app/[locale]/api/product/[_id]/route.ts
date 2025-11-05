@@ -1,16 +1,5 @@
 import { NextRequest } from 'next/server';
-import { remove, update, getAll } from '@/lib/services/category.service';
-
-export async function GET(_req: NextRequest, { params }: { params: Promise<{ _id: string }> }) {
-  const { _id } = await params;
-  let result: any;
-
-  if (_id === 'all') {
-    result = await getAll();
-  }
-
-  return Response.json(result);
-}
+import { remove, update } from '@/lib/services/product.service';
 
 export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ _id: string }> }) {
   const { _id } = await params;

@@ -34,7 +34,6 @@ export const fetchApi = async <T>(url: string, options: ConfigWithMethod) => {
   }
 
   const o = { ...DEFAULT_FETCH_OPTIONS, ...fetchOptions };
-  console.log('fetchApi', { newUrl, o });
 
   const r = await fetch(newUrl, o);
   const result = <T>await r.json();

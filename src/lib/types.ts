@@ -40,7 +40,7 @@ export interface Category {
   slug?: string;
 }
 
-export interface CategoryOptions {
+export interface DefaultOptions {
   _id: string;
   statusLoading: boolean;
 }
@@ -69,3 +69,10 @@ export type PaginationResult<T extends object> = T & {
 export type CategoryActionDto = Partial<Pick<Category, 'name' | 'active'>>;
 
 export type DialogCloseReason = 'backdropClick' | 'escapeKeyDown';
+
+export interface Product {
+  _id?: string;
+  name?: string;
+  categoryId?: string;
+  active?: boolean;
+}
