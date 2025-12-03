@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter, Link } from '@/i18n/navigation';
 import loginValidation from '@/validations/login';
@@ -8,10 +8,12 @@ import { Button, Box, Alert } from '@mui/material';
 import MhcInput from '@/components/ui/MhcInput';
 import MhcPassword from '@/components/ui/MhcPassword';
 import { LINKS } from '@/lib/constant';
-import { getApi, postApi } from '@/lib/utils';
+import { handleErrorIfy } from '@/lib/utils';
 import { useAppDispatch } from '@/lib/store/hooks';
 import { setUser } from '@/lib/store/reducers/usersReducer';
-import { User } from '@/lib/types';
+import { login } from '@/lib/services/auth.service';
+import { me } from '@/lib/services/user.service';
+import CustomError from '@/lib/errors/CustomError';
 
 export default function LoginPage() {
   const t = useTranslations();
@@ -27,10 +29,6 @@ export default function LoginPage() {
   const [loginError, setLoginError] = useState<string | undefined>('');
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    dispatch(setUser());
-  }, [dispatch]);
-
   async function onFormSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -43,7 +41,7 @@ export default function LoginPage() {
     });
 
     if (!validationResult.result) {
-      setErrors(() => ({ ...validationResult.errors }));
+      setErrors(validationResult.errors);
 
       return;
     }
@@ -51,26 +49,17 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const result = await postApi(LINKS.API_ROUTE.AUTH.LOGIN, {
-        body: JSON.stringify({ email, password }),
-      });
-
-      const me = await getApi<User>(LINKS.API_ROUTE.USER.ME);
-      dispatch(setUser(me));
-
-      if (result.status) {
-        router.push(LINKS.WEB.DASHBOARD);
-      } else {
-        setLoading(false);
-        setLoginError(result?.message);
-
-        if ('messages' in e) {
-          setErrors((prev) => ({ ...prev, ...result.messages }));
-        }
-      }
-    } catch {
+      handleErrorIfy(await login({ email, password }));
+      const user = await me();
+      dispatch(setUser(user));
+      router.push(LINKS.WEB.DASHBOARD);
+    } catch (error: any) {
       setLoading(false);
-      setLoginError(t('anErrorOccured'));
+      setLoginError(error?.message || t('anErrorOccured'));
+
+      if (error instanceof CustomError) {
+        setErrors((prev) => ({ ...prev, ...error.messages }));
+      }
     }
   }
 

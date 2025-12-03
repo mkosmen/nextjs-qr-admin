@@ -1,10 +1,13 @@
+'use client';
+
 import { useState, useRef, useCallback, useContext, useEffect } from 'react';
 import { Alert } from '@mui/material';
 import PasswordForm from '../components/PasswordForm';
-import { putApi } from '@/lib/utils';
-import { LINKS } from '@/lib/constant';
 import { ToastContext } from '@/lib/providers/ToastProvider';
 import { useTranslations } from 'next-intl';
+import { passwordReset } from '@/lib/services/user.service';
+import { PasswordUpdateDto } from '@/lib/types';
+import CustomError from '@/lib/errors/CustomError';
 
 interface Props {
   verify?: boolean;
@@ -12,45 +15,31 @@ interface Props {
   onSubmit: () => void;
 }
 
-interface UpdateDto {
-  newPassword: string;
-  newPasswordAgain: string;
-}
-
 export default function PasswordTab({ verify, onComplete, onSubmit }: Props) {
   const t = useTranslations();
   const toast = useContext(ToastContext);
 
-  const updateDto = useRef<UpdateDto | null>(null);
+  const updateDto = useRef<PasswordUpdateDto | null>(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-  function onSubmitHandler(dto: UpdateDto) {
+  function onSubmitHandler(dto: PasswordUpdateDto) {
     updateDto.current = dto;
     onSubmit();
   }
 
   const runUpdate = useCallback(async () => {
     try {
-      const result = await putApi<{
-        status: boolean;
-        message?: string;
-        messages?: Record<string, string[]>;
-      }>(LINKS.API_ROUTE.USER.PASSWORD.RESET, {
-        body: JSON.stringify(updateDto.current),
-      });
+      await passwordReset(updateDto.current!);
 
-      if (result.status) {
-        toast?.showToast(t('passwordUpdateSuccess'));
-      } else {
-        setError(result?.message || t('passwordUpdateFailed'));
+      toast?.showToast(t('passwordUpdateSuccess'));
+    } catch (error: any) {
+      setError(error?.message || t('passwordUpdateFailed'));
 
-        if ('messages' in result) {
-          setErrors((prev) => ({ ...prev, ...result.messages }));
-        }
+      if (error instanceof CustomError) {
+        setErrors((prev) => ({ ...prev, ...error.messages }));
       }
-    } catch {
       setError(t('anErrorOccured'));
     } finally {
       setLoading(false);

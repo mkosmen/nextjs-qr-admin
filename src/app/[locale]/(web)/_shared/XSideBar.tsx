@@ -12,7 +12,7 @@ import {
   KeyboardDoubleArrowRight,
   Inventory,
 } from '@mui/icons-material';
-import { Collapse, Divider, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { Collapse, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 
 interface NavItem {
   primary: string;
@@ -58,19 +58,20 @@ function NavItem(props: NavItem) {
   return (
     <ListItemButton
       className={classnames('!p-0', {
-        '!text-white [&_svg]:!fill-white': active,
-        'group !text-gray-600 hover:!text-gray-500 [&_svg]:!fill-gray-600': !active,
+        '!rounded-sm !bg-purple-600 !text-gray-200 [&_svg]:!fill-gray-200': active,
+        'group !text-gray-400 hover:!text-gray-500 [&_svg]:!fill-gray-400': !active,
       })}
     >
-      {href ? (
-        <Link href={href} className="block w-full p-3 group-hover:[&_svg]:!fill-gray-500">
-          <NavItemContent {...others} />
-        </Link>
-      ) : (
-        <div className="w-full p-3">
-          <NavItemContent {...others} />
-        </div>
-      )}
+      <Link
+        href={href || ''}
+        is={!href ? 'div' : undefined}
+        className={classnames('block w-full group-hover:[&_svg]:!fill-gray-500', {
+          'p-1': props.mini,
+          'p-3': !props.mini,
+        })}
+      >
+        <NavItemContent {...others} />
+      </Link>
     </ListItemButton>
   );
 }
@@ -79,7 +80,7 @@ function Nav(props: Nav) {
   const { open, children, id, ...others } = props;
 
   return (
-    <>
+    <div className="px-2">
       {children?.length ? (
         <>
           <NavItem key={id + '_0'} {...others} />
@@ -94,7 +95,7 @@ function Nav(props: Nav) {
       ) : (
         <NavItem key={id + '_0'} {...others} />
       )}
-    </>
+    </div>
   );
 }
 
@@ -133,25 +134,24 @@ export default function XSideBar() {
 
   return (
     <div
-      className={classnames('flex h-full flex-col bg-(--bg-color-dark)', {
+      className={classnames('flex h-full flex-col bg-white', {
         mini,
         'w-68 min-w-68': !mini,
         'w-16 min-w-16': mini,
       })}
     >
-      <List sx={{ width: '100%' }} component="nav" className="flex-1 !py-0">
+      <List sx={{ width: '100%' }} component="nav" className="flex flex-1 flex-col gap-1 !py-0">
         {items.map((m) => {
           return (
             <Fragment key={m.id}>
               <Nav {...m} active={pathName === `/${m.href}`} mini={mini} />
-              {m.divider && <Divider className="!border-gray-600" />}
+              {m.divider}
             </Fragment>
           );
         })}
       </List>
-      <Divider className="!border-gray-600" />
       <div
-        className={classnames('px-4 py-2 text-white', {
+        className={classnames('px-4 py-2', {
           'text-right': !mini,
           'text-center': mini,
         })}

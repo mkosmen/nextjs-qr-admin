@@ -90,7 +90,7 @@ export default function ActionDialog({
     setFormItems({
       name: product?.name || '',
       categoryId: product?.categoryId || '',
-      active: Boolean(product?.active),
+      active: Boolean(product?.active ?? true),
     });
   }, [product]);
 

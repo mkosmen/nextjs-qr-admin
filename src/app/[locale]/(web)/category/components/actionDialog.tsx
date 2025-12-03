@@ -38,14 +38,14 @@ export default function ActionDialog({
   const t = useTranslations();
   const [formItems, setFormItems] = useState<CategoryActionDto>({
     name: '',
-    active: false,
+    active: true,
   });
   const [errors, setErrors] = useState<{ name?: string[]; active?: [] }>({});
 
   useEffect(() => {
     setFormItems({
-      name: category?.name,
-      active: Boolean(category?.active),
+      name: category?.name || '',
+      active: Boolean(category?.active ?? true),
     });
   }, [category]);
 

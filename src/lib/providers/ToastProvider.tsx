@@ -22,7 +22,7 @@ export default function ToastProvider({ children }: { children: React.ReactNode 
   }
 
   return (
-    <ToastContext.Provider
+    <ToastContext
       value={{
         showToast,
       }}
@@ -30,6 +30,6 @@ export default function ToastProvider({ children }: { children: React.ReactNode 
       {children}
 
       <Toast open={toastOpenStatus} message={toastMessage} onClose={onCloseToast} />
-    </ToastContext.Provider>
+    </ToastContext>
   );
 }

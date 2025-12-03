@@ -1,9 +1,14 @@
-import { Category, CategoryActionDto } from '@/lib/types';
+'use server';
+
+import { Category, CategoryActionDto, PaginationResult } from '@/lib/types';
 import { LINKS } from '@/lib/constant';
 import { deleteRequest, getRequest, patchRequest, postRequest, putRequest } from '@/lib/request';
 
 export async function getList(config?: any) {
-  return await getRequest<Category[]>(LINKS.REST_API.CATEGORY._DEFAULT, config);
+  return await getRequest<PaginationResult<{ categories: Category[] }>>(
+    LINKS.REST_API.CATEGORY._DEFAULT,
+    config,
+  );
 }
 
 export async function updateActive({ _id, active }: { _id: string; active: boolean }) {

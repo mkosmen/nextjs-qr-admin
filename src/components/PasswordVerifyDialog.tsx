@@ -12,8 +12,9 @@ import {
   DialogTitle,
 } from '@mui/material';
 import MhcPassword from './ui/MhcPassword';
-import { LINKS } from '@/lib/constant';
-import { postApi } from '@/lib/utils';
+import { handleErrorIfy } from '@/lib/utils';
+import { passwordVerify } from '@/lib/services/user.service';
+import CustomError from '@/lib/errors/CustomError';
 
 interface Props {
   open: boolean;
@@ -36,32 +37,33 @@ export default function PasswordVerifyDialog({ open, onClose, onComplete }: Prop
   }, [open]);
 
   async function onSubmitHandler(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+    try {
+      e.preventDefault();
 
-    setLoading(true);
-    setErrors(undefined);
+      setLoading(true);
+      setErrors(undefined);
 
-    const validationResult = await passwordVerifyValidation(password);
+      const validationResult = await passwordVerifyValidation(password);
 
-    if (!validationResult.result) {
+      if (!validationResult.result) {
+        setLoading(false);
+        setErrors(validationResult.errors?.password);
+
+        return;
+      }
+
+      handleErrorIfy(await passwordVerify(password));
+
+      onComplete(true);
+    } catch (error: any) {
+      if (error instanceof CustomError) {
+        setErrors(error.messages?.password);
+      }
+
+      onComplete(false);
+    } finally {
       setLoading(false);
-      setErrors(validationResult.errors?.password);
-
-      return;
     }
-
-    const result = await postApi<{
-      status: boolean;
-      message?: string;
-      messages?: Record<string, string[]>;
-    }>(LINKS.API_ROUTE.USER.PASSWORD.VERIFY, { body: JSON.stringify({ password }) });
-
-    if (!result.status && 'messages' in result) {
-      setErrors(result.messages?.password);
-    }
-
-    onComplete(result.status);
-    setLoading(false);
   }
 
   function onCloseHandler(reason?: 'backdropClick' | 'escapeKeyDown') {

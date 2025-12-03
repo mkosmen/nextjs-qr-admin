@@ -6,15 +6,12 @@ import {
   Product,
   PaginationLimitModel,
   PaginationModel,
-  PaginationResult,
   DefaultOptions,
   Category,
 } from '@/lib/types';
-import { deleteApi, getApi, patchApi, postApi, putApi } from '@/lib/utils';
 import {
   DEFAULT_PAGINATION_LIMITATION,
   DEFAULT_PAGINATION_MODEL,
-  LINKS,
   MODAL_ACTION_TYPE,
   PAGE_SIZE_OPTIONS,
 } from '@/lib/constant';
@@ -32,6 +29,10 @@ import { Delete, Edit } from '@mui/icons-material';
 import Actions from './components/actions';
 import ActionDialog from './components/actionDialog';
 import DeleteDialog from './components/deleteDialog';
+import { create, getList, remove, update, updateActive } from '@/lib/services/product.service';
+import { getAll } from '@/lib/services/category.service';
+import { handleErrorIfy } from '@/lib/utils';
+import NoData from '@/components/NoData';
 
 export default function ProductPage() {
   const t = useTranslations();
@@ -147,16 +148,11 @@ export default function ProductPage() {
       });
 
       const newProductState = {
-        _id: row._id,
+        _id: row._id!,
         active: checked,
       };
 
-      await patchApi(LINKS.API_ROUTE.PRODUCT.STATUS, {
-        replace: {
-          _id: row._id,
-        },
-        body: JSON.stringify(newProductState),
-      });
+      await updateActive(newProductState);
 
       updateProductState(newProductState);
       toast?.showToast(t('product.statusUpdateSuccess'));
@@ -223,14 +219,13 @@ export default function ProductPage() {
     setLoading(true);
 
     try {
-      const result = await getApi<PaginationResult<{ products: Product[] }>>(
-        LINKS.API_ROUTE.PRODUCT._DEFAULT,
-        {
+      const result = handleErrorIfy(
+        await getList({
           params: {
             page: pagination.page + 1,
             limit: pagination.pageSize,
           },
-        },
+        }),
       );
 
       setProducts(result.products);
@@ -254,15 +249,10 @@ export default function ProductPage() {
 
     try {
       if (actionType === 'create') {
-        await postApi(LINKS.API_ROUTE.PRODUCT._DEFAULT, { body: JSON.stringify(dto) });
+        await create(dto);
         getProducts();
       } else {
-        await putApi(LINKS.API_ROUTE.PRODUCT.SINGLE, {
-          replace: {
-            _id: selectedProduct?._id,
-          },
-          body: JSON.stringify(dto),
-        });
+        await update(selectedProduct!._id!, dto);
         updateSingleProduct(selectedProduct!._id!, dto);
       }
       setActionDialogKey((p) => p + 1);
@@ -289,9 +279,7 @@ export default function ProductPage() {
     setDeleteLoading(true);
 
     try {
-      await deleteApi(LINKS.API_ROUTE.PRODUCT.SINGLE, {
-        replace: { _id: selectedProduct?._id },
-      });
+      await remove(selectedProduct!._id!);
       getProducts();
       setSelectedProduct(null);
       setIsDeleteDialogOpen(false);
@@ -329,11 +317,8 @@ export default function ProductPage() {
   }
 
   async function getCategories() {
-    try {
-      const result = await getApi<Category[]>(LINKS.API_ROUTE.CATEGORY.ALL);
-      setCategories(result);
-    } finally {
-    }
+    const result = await getAll();
+    setCategories(result);
   }
 
   const init = useCallback(async () => {
@@ -355,23 +340,27 @@ export default function ProductPage() {
             openActionDialog={() => setIsActionDialogOpen(true)}
           />
         </div>
-        <DataGrid
-          style={{ height: '423px' }}
-          apiRef={apiRef}
-          getRowId={(row) => row._id!}
-          rows={products}
-          columns={columns}
-          disableColumnResize
-          disableColumnMenu
-          disableColumnSelector
-          disableRowSelectionOnClick
-          rowSelection={false}
-          paginationModel={pagination}
-          onPaginationModelChange={setPagination}
-          rowCount={limitation.total}
-          pageSizeOptions={PAGE_SIZE_OPTIONS}
-          paginationMode="server"
-        />
+        {products.length ? (
+          <DataGrid
+            style={{ height: '423px' }}
+            apiRef={apiRef}
+            getRowId={(row) => row._id!}
+            rows={products}
+            columns={columns}
+            disableColumnResize
+            disableColumnMenu
+            disableColumnSelector
+            disableRowSelectionOnClick
+            rowSelection={false}
+            paginationModel={pagination}
+            onPaginationModelChange={setPagination}
+            rowCount={limitation.total}
+            pageSizeOptions={PAGE_SIZE_OPTIONS}
+            paginationMode="server"
+          />
+        ) : (
+          <NoData message={t('product.noData')} />
+        )}
       </Box>
 
       <ActionDialog

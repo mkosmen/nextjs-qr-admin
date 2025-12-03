@@ -76,3 +76,5 @@ export interface Product {
   categoryId?: string;
   active?: boolean;
 }
+
+export type ProductActionDto = Partial<Pick<Product, 'name' | 'active'>>;

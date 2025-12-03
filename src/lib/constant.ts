@@ -10,32 +10,6 @@ export const LINKS = {
     PRODUCT: 'product',
     COMPANY: 'company',
   },
-  API_ROUTE: {
-    AUTH: {
-      LOGIN: 'api/auth/login',
-      SIGNUP: 'api/auth/signup',
-      LOGOUT: 'api/auth/logout',
-      VERIFY: 'api/auth/verify',
-    },
-    USER: {
-      ME: 'api/user/me',
-      PASSWORD: {
-        VERIFY: 'api/user/password/verify',
-        RESET: 'api/user/password/reset',
-      },
-    },
-    CATEGORY: {
-      _DEFAULT: 'api/category',
-      ALL: 'api/category/all',
-      SINGLE: 'api/category/[_id]',
-      STATUS: 'api/category/[_id]/status',
-    },
-    PRODUCT: {
-      _DEFAULT: 'api/product',
-      SINGLE: 'api/product/[_id]',
-      STATUS: 'api/product/[_id]/status',
-    },
-  },
   REST_API: {
     AUTH: {
       LOGIN: 'auth/signin',
@@ -97,3 +71,5 @@ export const DEFAULT_PAGINATION: Pagination = {
 export const PAGE_SIZE_OPTIONS = [10, 20, 30, 50, 100];
 
 export type MODAL_ACTION_TYPE = 'create' | 'update';
+
+export const PUBLIC_ROUTES = ['/login', '/signup'];

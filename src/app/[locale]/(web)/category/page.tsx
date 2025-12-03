@@ -8,17 +8,15 @@ import {
   DefaultOptions,
   PaginationLimitModel,
   PaginationModel,
-  PaginationResult,
 } from '@/lib/types';
-import { deleteApi, getApi, patchApi, postApi, putApi } from '@/lib/utils';
 import {
   DEFAULT_PAGINATION_LIMITATION,
   DEFAULT_PAGINATION_MODEL,
-  LINKS,
   MODAL_ACTION_TYPE,
   PAGE_SIZE_OPTIONS,
 } from '@/lib/constant';
 import { ToastContext } from '@/lib/providers/ToastProvider';
+import { create, getList, remove, update, updateActive } from '@/lib/services/category.service';
 // ---
 import { Box, Switch } from '@mui/material';
 import { DataGrid, GridActionsCellItem, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
@@ -26,6 +24,7 @@ import { Delete, Edit } from '@mui/icons-material';
 import Actions from './components/actions';
 import ActionDialog from './components/actionDialog';
 import DeleteDialog from './components/deleteDialog';
+import NoData from '@/components/NoData';
 
 export default function CategoryPage() {
   const t = useTranslations();
@@ -126,18 +125,13 @@ export default function CategoryPage() {
       });
 
       const newCategoryState = {
-        _id: row._id,
+        _id: row._id!,
         active: checked,
       };
 
-      await patchApi(LINKS.API_ROUTE.CATEGORY.STATUS, {
-        replace: {
-          _id: row._id,
-        },
-        body: JSON.stringify(newCategoryState),
-      });
-
+      await updateActive(newCategoryState);
       updateCategoryState(newCategoryState);
+
       toast?.showToast(t('category.statusUpdateSuccess'));
     } catch {
       toast?.showToast(t('category.statusUpdateFailed'));
@@ -202,15 +196,12 @@ export default function CategoryPage() {
     setLoading(true);
 
     try {
-      const result = await getApi<PaginationResult<{ categories: Category[] }>>(
-        LINKS.API_ROUTE.CATEGORY._DEFAULT,
-        {
-          params: {
-            page: pagination.page + 1,
-            limit: pagination.pageSize,
-          },
+      const result = await getList({
+        params: {
+          page: pagination.page + 1,
+          limit: pagination.pageSize,
         },
-      );
+      });
 
       setCategories(result.categories);
       setPagination((prev) => ({
@@ -233,15 +224,10 @@ export default function CategoryPage() {
 
     try {
       if (actionType === 'create') {
-        await postApi(LINKS.API_ROUTE.CATEGORY._DEFAULT, { body: JSON.stringify(dto) });
+        await create(dto);
         getCategories();
       } else {
-        await putApi(LINKS.API_ROUTE.CATEGORY.SINGLE, {
-          replace: {
-            _id: selectedCategory?._id,
-          },
-          body: JSON.stringify(dto),
-        });
+        await update(selectedCategory!._id!, dto);
         updateSingleCategory(selectedCategory!._id!, dto);
       }
       setActionDialogKey((p) => p + 1);
@@ -268,9 +254,8 @@ export default function CategoryPage() {
     setDeleteLoading(true);
 
     try {
-      await deleteApi(LINKS.API_ROUTE.CATEGORY.SINGLE, {
-        replace: { _id: selectedCategory?._id },
-      });
+      await remove(selectedCategory!._id!);
+
       getCategories();
       setSelectedCategory(null);
       setIsDeleteDialogOpen(false);
@@ -321,22 +306,26 @@ export default function CategoryPage() {
             openActionDialog={() => setIsActionDialogOpen(true)}
           />
         </div>
-        <DataGrid
-          style={{ height: '423px' }}
-          getRowId={(row) => row._id!}
-          rows={categories}
-          columns={columns}
-          disableColumnResize
-          disableColumnMenu
-          disableColumnSelector
-          disableRowSelectionOnClick
-          rowSelection={false}
-          paginationModel={pagination}
-          onPaginationModelChange={setPagination}
-          rowCount={limitation.total}
-          pageSizeOptions={PAGE_SIZE_OPTIONS}
-          paginationMode="server"
-        />
+        {categories.length ? (
+          <DataGrid
+            style={{ height: '423px' }}
+            getRowId={(row) => row._id!}
+            rows={categories}
+            columns={columns}
+            disableColumnResize
+            disableColumnMenu
+            disableColumnSelector
+            disableRowSelectionOnClick
+            rowSelection={false}
+            paginationModel={pagination}
+            onPaginationModelChange={setPagination}
+            rowCount={limitation.total}
+            pageSizeOptions={PAGE_SIZE_OPTIONS}
+            paginationMode="server"
+          />
+        ) : (
+          <NoData message={t('category.noData')} />
+        )}
       </Box>
 
       <ActionDialog

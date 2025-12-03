@@ -3,6 +3,8 @@
     "title": "qr",
     "description": "Açıklama"
   },
+  "noData": "Hiç kayıt yok ...",
+  "retry": "Retry",
   "name": "Ad",
   "surname": "Soyad",
   "submit": "Gönder",
@@ -67,7 +69,8 @@
     "updateSuccess": "Kategori güncellendi",
     "updateFailed": "Kategori güncellenemedi",
     "deleteSuccess": "Kategori silindi",
-    "deleteFailed": "Kategori silinemedi"
+    "deleteFailed": "Kategori silinemedi",
+    "noData": "Hiç kategori yok ..."
   },
   "product": {
     "name": "Ürün Adı",
@@ -80,6 +83,7 @@
     "updateSuccess": "Ürün güncellendi",
     "updateFailed": "Ürün güncellenemedi",
     "deleteSuccess": "Ürün silindi",
-    "deleteFailed": "Ürün silinemedi"
+    "deleteFailed": "Ürün silinemedi",
+    "noData": "Hiç ürün yok ..."
   }
 }

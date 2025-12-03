@@ -1,31 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 import createMiddleware from 'next-intl/middleware';
 import { getLocale } from 'next-intl/server';
-import { LINKS, STATIC_KEYS } from './lib/constant';
-import { DEFAULT_LOCALE, LOCALES } from './lib/constant';
-
-const publicRoutes = ['/login', '/signup'];
+import { LINKS } from './lib/constant';
+import { getToken } from './lib/services/token.service';
+import { isPublicRoute } from './lib/utils';
+import { routing } from './i18n/routing';
 
 const i18nMiddleware = (req: NextRequest) => {
-  return createMiddleware({
-    locales: LOCALES,
-    defaultLocale: DEFAULT_LOCALE,
-  })(req);
+  return createMiddleware(routing)(req);
 };
 
 async function authMiddleware(req: NextRequest, response: NextResponse) {
   const path = req.nextUrl.pathname;
-  const isPublicRoute = publicRoutes.some((p) => path.endsWith(p));
-  const cookieStore = await cookies();
-  const token = cookieStore.get(STATIC_KEYS.TOKEN)?.value;
+  const token = await getToken();
   const locale = await getLocale();
+  const isPublic = isPublicRoute(path, locale);
 
-  if (!token && !isPublicRoute) {
+  if (!token && !isPublic) {
     return NextResponse.redirect(new URL(`/${locale}/${LINKS.WEB.LOGIN}`, req.nextUrl));
   }
 
-  if (token && isPublicRoute) {
+  if (token && isPublic) {
     return NextResponse.redirect(new URL(`/${locale}/${LINKS.WEB.DASHBOARD}`, req.nextUrl));
   }
 
@@ -43,5 +38,20 @@ export default async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: '/((?!api|trpc|_next|_vercel|.*\\..*).*)',
+  matcher: [
+    /**
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     */
+    {
+      source: '/((?!api|_next/static|_next/image|media|fonts|favicon.ico|favicon.png).*)',
+      missing: [
+        // Exclude Server Actions
+        { type: 'header', key: 'next-action' },
+      ],
+    },
+  ],
 };

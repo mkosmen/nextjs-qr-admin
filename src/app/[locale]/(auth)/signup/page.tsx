@@ -5,10 +5,12 @@ import { useTranslations } from 'next-intl';
 import signupValidation from '@/validations/signup';
 import { useRouter, Link } from '@/i18n/navigation';
 import { LINKS } from '@/lib/constant';
-import { postApi } from '@/lib/utils';
+import { handleErrorIfy } from '@/lib/utils';
 import { Button, Box, Alert } from '@mui/material';
 import MhcInput from '@/components/ui/MhcInput';
 import MhcPassword from '@/components/ui/MhcPassword';
+import { signUp } from '@/lib/services/auth.service';
+import CustomError from '@/lib/errors/CustomError';
 
 export default function SigUpPage() {
   const t = useTranslations();
@@ -48,27 +50,15 @@ export default function SigUpPage() {
         return;
       }
 
-      const result = await postApi<{
-        status: boolean;
-        message?: string;
-        messages?: Record<string, string[]>;
-      }>(LINKS.API_ROUTE.AUTH.SIGNUP, {
-        body: JSON.stringify({ name, surname, email, password }),
-      });
-
-      if (result.status) {
-        router.push(LINKS.WEB.LOGIN);
-      } else {
-        setSignUpError(result.message);
-        if ('messages' in result) {
-          setErrors((prev) => ({ ...prev, ...result.messages }));
-        }
-
-        setLoading(false);
-      }
+      handleErrorIfy(await signUp({ name, surname, email, password }));
+      router.push(LINKS.WEB.LOGIN);
     } catch (err: any) {
-      setSignUpError(err?.message);
       setLoading(false);
+      setSignUpError(err?.message);
+
+      if (err instanceof CustomError) {
+        setErrors((prev) => ({ ...prev, ...err.messages }));
+      }
     }
   }
 

@@ -1,20 +1,21 @@
 'use server';
 
-import axios from 'axios';
-import { cookies } from 'next/headers';
-import { STATIC_KEYS } from '../constant';
+import axios, { CreateAxiosDefaults } from 'axios';
+import { removeToken, getToken } from '@/lib/services/token.service';
 
-const options = {
+const options: CreateAxiosDefaults = {
   baseURL: process.env.NEXT_PUBLIC_BASE_API_URL,
   timeout: +(process.env.NEXT_PUBLIC_TIMEOUT || 1000),
+  headers: {
+    'next-action': true,
+  },
 };
 
 const instance = axios.create(options);
 
 instance.interceptors.request.use(
   async function (config) {
-    const cookieStorage = await cookies();
-    const token = cookieStorage.get(STATIC_KEYS.TOKEN)?.value;
+    const token = await getToken();
     if (token) {
       config.headers['x-token'] = token;
     }
@@ -27,15 +28,16 @@ instance.interceptors.request.use(
 );
 
 instance.interceptors.response.use(
-  function (response) {
-    return response;
-  },
-  async function (error) {
-    if (error.code === 'ECONNREFUSED') {
-      return Promise.reject(error);
+  (response) => response,
+  async (error) => {
+    if (error.response.status === 401) {
+      await removeToken();
     }
 
-    return Promise.reject(error?.response?.data);
+    return Promise.reject({
+      ...error.response.data,
+      status: error.response.status,
+    });
   },
 );
 
